@@ -1,0 +1,21 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<h2>This is the home page</h2>
+<p>It's a test view</p>
+<ul>
+  <% animals.forEach((animal) => { %>
+  <li><%= animal.name %></li>
+  <% }); %>
+</ul>
+
+<button class="btn btn-success">test button</button>
+
+<script>
+    $('button').click(function () {
+        console.log("button clicked!!!");
+        $.get('/newAnimals', (data, status) => {
+            console.log("data received: ", data);
+            console.log("status: ", status);
+        })
+    });
+</script>
