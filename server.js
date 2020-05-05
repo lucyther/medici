@@ -25,6 +25,14 @@ app.route('/wallet').get(function(req, res){
     res.render('wallet');
 });
 
+// Get the wallet address;
+// TODO: make this work
+app.route('/wallet-address').get((req, res) => {
+  const address = web3.eth.accounts.wallet[0].address;
+  console.log("address: ", address)
+  return res.send(address);
+});
+
 // Get the wallet's cETH balance
 app.route('/wallet-balance/ceth/').get((req, res) => {
   cEthContract.methods.balanceOf(myWalletAddress).call().then((result) => {
@@ -37,7 +45,7 @@ app.route('/wallet-balance/ceth/').get((req, res) => {
 });
 
 // Get the amount of ETH supplied by the user
-app.route('/wallet-balance/eth/').get((req, res) => {
+app.route('/protocol-balance/eth/').get((req, res) => {
   cEthContract.methods.balanceOfUnderlying(myWalletAddress).call().then((balance) => {
     let balanceOfUnderlying = web3.utils.fromWei(balance).toString();
     console.log("getting amount of ETH supplied to Compound...")
@@ -50,13 +58,35 @@ app.route('/wallet-balance/eth/').get((req, res) => {
   })
 })
 
-app.route('/protocol-balance/eth').get((req, res) => {
-  // TODO: fill in
+// Get the amount of cTokens in user's wallet
+app.route('/wallet-balance/eth').get((req, res) => {
+  web3.eth.getBalance(myWalletAddress).then((result) => {
+    const ethBalance = web3.utils.fromWei(result);
+    return res.send(ethBalance);
+  }).catch((error) => {
+    console.error('[wallet-balance] error: ', error);
+    return res.sendStatus(400);
+  });
 });
 
-app.post('/supplyEth', (req, res) => {
-    console.log("received data from post request: ", req);
-})
+app.route('/supply/eth/').get((req, res) => {
+  console.log("[supply] amount to supply: ", req.query.amount)
+  if (isNaN(req.params.amount)) {
+    return res.sendStatus(400);
+  }
+
+  cEthContract.methods.mint().send({
+    from: myWalletAddress,
+    gasLimit: web3.utils.toHex(500000),
+    gasPrice: web3.utils.toHex(20000000000),
+    value: web3.utils.toHex(web3.utils.toWei(req.params.amount, 'ether'))
+  }).then((result) => {
+    return res.sendStatus(200);
+  }).catch((error) => {
+    console.error('[supply] error:', error);
+    return res.sendStatus(400);
+  });
+});
 
 // Test code below
 
