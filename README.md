@@ -1,4 +1,4 @@
-# medici
+# MEDICI
 
 ## [cTokens](https://compound.finance/ctokens)
 
