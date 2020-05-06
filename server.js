@@ -3,7 +3,8 @@ const Web3 = require('web3');
 
 // Wallet
 const walletPrivateKey = process.env.WALLET_PRIVATE_KEY;
-const web3 = new Web3('https://mainnet.infura.io/v3/a305eb1a2c9b42cdbcf61db762f8243e');
+// const web3 = new Web3('https://mainnet.infura.io/v3/a305eb1a2c9b42cdbcf61db762f8243e');
+const web3 = new Web3('http://127.0.0.1:8545');
 
 web3.eth.accounts.wallet.add(walletPrivateKey);
 const myWalletAddress = web3.eth.accounts.wallet[0].address;
@@ -26,7 +27,6 @@ app.route('/wallet').get(function(req, res){
 });
 
 // Get the wallet address;
-// TODO: make this work
 app.route('/wallet-address').get((req, res) => {
   const address = web3.eth.accounts.wallet[0].address;
   console.log("address: ", address)
@@ -69,8 +69,8 @@ app.route('/wallet-balance/eth').get((req, res) => {
   });
 });
 
-app.route('/supply/eth/').get((req, res) => {
-  console.log("[supply] amount to supply: ", req.query.amount)
+app.route('/supply/eth/:amount').get((req, res) => {
+  console.log("[supply] amount to supply: ", req.params.amount)
   if (isNaN(req.params.amount)) {
     return res.sendStatus(400);
   }
