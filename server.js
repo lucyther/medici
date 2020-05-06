@@ -88,6 +88,23 @@ app.route('/supply/eth/:amount').get((req, res) => {
   });
 });
 
+app.route('/redeem/eth/:cTokenAmount').get((req, res) => {
+  if (isNaN(req.params.cTokenAmount)) {
+    return res.sendStatus(400);
+  }
+
+  cEthContract.methods.redeem(req.params.cTokenAmount * 1e8).send({
+    from: myWalletAddress,
+    gasLimit: web3.utils.toHex(500000),
+    gasPrice: web3.utils.toHex(20000000000),
+  }).then((result) => {
+    return res.sendStatus(200);
+  }).catch((error) => {
+    console.error('[redeem] error: ', error);
+    return res.sendStatus(400);
+  });
+});
+
 // Test code below
 
 app.get('/', (req, res) => {
