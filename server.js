@@ -112,6 +112,7 @@ app.route('/supply/eth/:amount').get((req, res) => {
   });
 });
 
+// NOTE: this is not being triggered currently. Done in the client
 app.route('/redeem/eth/:cTokenAmount').get((req, res) => {
   const myWalletAddress = req.query.walletAddress;
   console.log("amount to redeem: ", req.params.cTokenAmount)

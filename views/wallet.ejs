@@ -159,12 +159,19 @@
         // Redeem cETH
         var redeemButton = document.getElementById('redeemBtn');
         redeemButton.onclick = async function() {
-            // TODO: move to client-side call
+            
             console.log("Exchanging all cETH based on underlying ETH amount...");
-            $.get('/redeem/eth/' + cTokenBalance, {walletAddress: myWalletAddress}, (data, status) => {
-                console.log("redeemed")
+
+            cEthContract.methods.redeem(Math.floor(cTokenBalance * 1e8)).send({
+                from: myWalletAddress,
+                gasLimit: web3.utils.toHex(500000),
+                gasPrice: web3.utils.toHex(20000000000),
+            }).then((result) => {
+                console.log("redeemed!")
                 successMessage.innerHTML = '💸 You have redeemed ETH with your cETH!'
-            })
+            }).catch((error) => {
+                console.error('[redeem] error: ', error);
+            });
         }
     </script>
 
