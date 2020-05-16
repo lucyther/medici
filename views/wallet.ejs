@@ -21,14 +21,13 @@
 
                 <h1 class="display-4 font-weight-light"><span class="underline--magical-yellow-thick">Medici</span> </h1>
                 <h2 class="font-weight-lighter">The interest-earning wallet</h2>
-                <p class="font-weight-lighter">Earning 1% APY</p>
+                <button class="btn btn-hover color-5 font-weight-light" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
 
-                <button class="btn btn-hover color-5 font-weight-light" id="walletButton"><i class="fas fa-wallet"></i> </button>
                 <h4 class="font-weight-light">Wallet Balance</h4>
                 <p class="font-weight-lighter" id="walletBalance"></p>
 
                 <!-- ETH SUPPLY -->
-                <h4 class="font-weight-light">Amount of ETH supplied to Compound</h4>
+                <h4 class="font-weight-light">Amount of ETH supplied</h4>
                 <div class="card supply-card mb-3 shadow-sm" style="max-width: 60%;">
                     <div class="row no-gutters">
                         <div class="col-md-4">
@@ -42,29 +41,36 @@
                     </div>
                 </div>
 
+                <h4>Portfolio value</h4>
 
+                <p id="currentValue"></p>
+                <!-- CTOKENS -->
+                <p id="exchangeRate">Exchange rate: </p>
+                <h4 class="font-weight-light">cTokens</h4>
+                <p class="font-weight-lighter" id="cTokens"></p>
+                <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
+                
             </section>
+        </div>
+    
+        <div class="card body-card shadow1">
 
             <!-- SUPPLY OR REDEEM -->
             <section id="supplyOrRedeem">
-                
+                    
                 <form action="" id="supplyForm">
                     <input type="text" id="amountToSupply">
                     <input type="submit" class="btn btn-hover color-5 font-weight-light" id="supplyBtn" style="padding-top: .7rem;" value="SUPPLY">
                 </form>
 
-                <!-- CTOKENS -->
-                <h4 class="font-weight-light">cTokens</h4>
-                <p class="font-weight-lighter" id="cTokens"></p>
-                <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
-                
+
                 <h4 class="font-weight-light">Redeem ETH from cETH</h4>
-                <p id="exchangeRate"></p>
-                <p id="redeemableEthValue"></p>
+                
                 <a class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem; color: white">REDEEM</a>
                 <p id="status"></p>
                 <p id="successMessage"></p>
             </section>
+
         </div>
     </div>
 
@@ -85,19 +91,18 @@
 
         var myWalletAddress;
         var cTokenBalance; 
+        var suppliedAmount;
 
         web3.eth.getAccounts().then((accounts) => {
             console.log("[getAccounts] accounts: ", accounts)
             walletButton.innerHTML += accounts[0];
             myWalletAddress = accounts[0]
 
-            // portis.showPortis();
-
             // Get the amount of eth in user's wallet
             web3.eth.getBalance(myWalletAddress).then((result) => {
                 console.log('eth balance for wallet: ', result)
                 const ethBalance = web3.utils.fromWei(result);
-                walletBalance.innerHTML = ethBalance;
+                walletBalance.innerHTML = parseFloat(ethBalance).toFixed(4) + " ETH";
             }).catch((error) => {
                 console.error('[wallet-balance] error: ', error);
             });
@@ -105,6 +110,7 @@
             // Get the amount of ETH supplied by the user
             cEthContract.methods.balanceOfUnderlying(myWalletAddress).call().then((balance) => {
                 let balanceOfUnderlying = web3.utils.fromWei(balance).toString();
+                suppliedAmount = web3.utils.fromWei(balance)
                 console.log("getting amount of ETH supplied to Compound...")
                 console.log("underlying eth: ", balanceOfUnderlying);
                 underlyingEth.innerHTML = balanceOfUnderlying;
@@ -114,20 +120,25 @@
 
             
             // Get the wallet's cETH balance
-            cEthContract.methods.balanceOf(myWalletAddress).call().then((result) => {
-                cTokenBalance = result / 1e8;
+            cEthContract.methods.balanceOf(myWalletAddress).call()
+            .then((result) => {
+                cTokenBalance = result / 1e8
                 console.log("[wallet-ctoken-balance] obtained cToken balance");
-                cTokens.innerHTML = cTokenBalance;
+                cTokens.innerHTML = cTokenBalance + " cETH";
 
                 $.get('https://api.compound.finance/api/v2/ctoken', (data, status) => {
                     console.log("ctokens result: ", data.cToken[7]["exchange_rate"])
                     var ethExchangeRate = data.cToken[7]["exchange_rate"].value;
                     
                     console.log("cTokens supplied: ", cTokenBalance)
-                    var redeemValue = cTokenBalance * ethExchangeRate;
-                    console.log("total eth value: ", redeemValue);
+                    var ethValue = cTokenBalance * ethExchangeRate;
+                    console.log("total eth value: ", ethValue);
 
-                    redeemableEthValue.innerHTML = 'At the current exchange rate of ' + ethExchangeRate + ', your cETH can be redeemed for <b>' + redeemValue + '</b> ETH.';
+                    var yield = (ethValue - suppliedAmount) / suppliedAmount;
+                    var amountEarned = ethValue - suppliedAmount;
+
+                    currentValue.innerHTML = ethValue.toFixed(4) + " ETH (" + yield.toFixed(3) + "%)" 
+                    exchangeRate.innerHTML += parseFloat(ethExchangeRate).toFixed(5)
                 })
 
 
