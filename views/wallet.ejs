@@ -88,6 +88,7 @@
         const cEthContract = new web3.eth.Contract(cEthAbiJson, cEthContractAddress);
 
         var myWalletAddress;
+        var cTokenBalance; 
 
         web3.eth.getAccounts().then((accounts) => {
             console.log("[getAccounts] accounts: ", accounts)
@@ -96,22 +97,32 @@
 
             // portis.showPortis();
 
-            $.get('/wallet-balance/eth', {walletAddress: myWalletAddress}, (data, status) => {
-                console.log("got wallet balance: ", data);
-                walletBalance.innerHTML = data;
+            // Get the amount of eth in user's wallet
+            web3.eth.getBalance(myWalletAddress).then((result) => {
+                console.log('eth balance for wallet: ', result)
+                const ethBalance = web3.utils.fromWei(result);
+                walletBalance.innerHTML = ethBalance;
+            }).catch((error) => {
+                console.error('[wallet-balance] error: ', error);
             });
 
-            $.get('/protocol-balance/eth', {walletAddress: myWalletAddress}, (data, status) => {
-                console.log("got amount of ETH supplied to Compound: ", data)
-                underlyingEth.innerHTML = data;
+            // Get the amount of ETH supplied by the user
+            cEthContract.methods.balanceOfUnderlying(myWalletAddress).call().then((balance) => {
+                let balanceOfUnderlying = web3.utils.fromWei(balance).toString();
+                console.log("getting amount of ETH supplied to Compound...")
+                console.log("underlying eth: ", balanceOfUnderlying);
+                underlyingEth.innerHTML = balanceOfUnderlying;
+            }).catch((error) => {
+                console.error('[wallet-token-balance] error: ', error);
             });
 
-            $.get('/wallet-balance/ceth', {walletAddress: myWalletAddress},  (data, status) => {
-                console.log("got amount of cETH in account wallet: ", data)
-                cTokens.innerHTML = data;
-                cTokenBalance = data;
+            
+            // Get the wallet's cETH balance
+            cEthContract.methods.balanceOf(myWalletAddress).call().then((result) => {
+                cTokenBalance = result / 1e8;
+                console.log("[wallet-ctoken-balance] obtained cToken balance");
+                cTokens.innerHTML = cTokenBalance;
 
-                // get the current exchange rate
                 $.get('https://api.compound.finance/api/v2/ctoken', (data, status) => {
                     console.log("ctokens result: ", data.cToken[7]["exchange_rate"])
                     var ethExchangeRate = data.cToken[7]["exchange_rate"].value;
@@ -123,13 +134,14 @@
                     redeemableEthValue.innerHTML = 'At the current exchange rate of ' + ethExchangeRate + ', your cETH can be redeemed for <b>' + redeemValue + '</b> ETH.';
                 })
 
-            }); 
+
+            }).catch((error) => {
+                console.error('[wallet-ctoken-balance] error: ', error);
+            })
 
         }).catch((error) => {
             console.error('[get accounts] error: ', error)
         });
-
-        var cTokenBalance; 
         
         // var supplyButton = document.getElementById('supplyBtn');
         var supplyForm = document.getElementById('supplyForm')
@@ -153,7 +165,6 @@
             }).catch((error) => {
                 console.error('[supply] error:', error);
             });
-
         }
 
         // Redeem cETH
