@@ -57,6 +57,9 @@
         <div class="card body-card shadow1">
 
             <!-- SUPPLY OR REDEEM -->
+            <span id="spinner" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+            <p id="statusMessage"></p>
+
             <section id="supplyOrRedeem">
                 <h4 class="font-weight-light">Supply ETH to start earning interest</h4>
                 <form action="" id="supplyForm">
@@ -74,8 +77,6 @@
 
                 <!-- <a class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem; color: white">REDEEM</a> -->
                 <p id="cTokenToEth"></p>
-                <p id="status"></p>
-                <p id="successMessage"></p>
             </section>
 
         </div>
@@ -164,11 +165,12 @@
         supplyForm.onsubmit = function(event){
             console.log("supply button clicked!");
             event.preventDefault()
-            status.innerHTML = "supplying ETH to the compound protocol...";
+            
             const amount = document.getElementById('amountToSupply').value;
+            $('#spinner').show();
+            $('#statusMessage').append(`<span>Supplying ` + amount + ` ETH...</span>`)
 
             // Mint some cETH by supplying ETH to the compound protocol
-            console.log("cEthContract: ", cEthContract)
 
             cEthContract.methods.mint().send({
                 from: myWalletAddress,
@@ -176,9 +178,13 @@
                 gasPrice: web3.utils.toHex(20000000000),
                 value: web3.utils.toHex(web3.utils.toWei(amount, 'ether'))
             }).then((result) => {
-                console.log("supplied!!!")
+                console.log("supplied! result: ", result)
+                $('#spinner').hide();
+                statusMessage.innerHTML = `💰 Supplied! Transaction hash: ` +  `<a target="_blank" href="https://rinkeby.etherscan.io/tx/` + result.transactionHash + `">` + result.transactionHash + `</a>`
             }).catch((error) => {
                 console.error('[supply] error:', error);
+                $('#spinner').hide();
+                statusMessage.innerHTML = `🚨 Something went wrong. Please try again.`
             });
         }
 
@@ -194,16 +200,25 @@
             console.log("redeem button clicked!");
             event.preventDefault();
             console.log("Exchanging all cETH based on underlying ETH amount...");
-            var amount = $('#amountToRedeem').val()
+            
+
+            var amount = $('#amountToRedeem').val();
+
+            $('#spinner').show();
+            $('#statusMessage').append("<span>Redeeming " + amount + " cETH for ETH...</span>");
+
             cEthContract.methods.redeem(Math.floor(amount * 1e8)).send({
                 from: myWalletAddress,
                 gasLimit: web3.utils.toHex(500000),
                 gasPrice: web3.utils.toHex(20000000000),
             }).then((result) => {
-                console.log("redeemed!")
-                successMessage.innerHTML = '💸 You have redeemed ETH with your cETH!'
+                console.log("result from redeeming: ", result)
+                $('#spinner').hide();
+                statusMessage.innerHTML = `💸 You have redeemed ETH with your cETH! Transaction hash: ` +  `<a target="_blank" href="https://rinkeby.etherscan.io/tx/` + result.transactionHash + `">` + result.transactionHash + `</a>`
             }).catch((error) => {
                 console.error('[redeem] error: ', error);
+                $('#spinner').hide();
+                statusMessage.innerHTML = `🚨 Something went wrong. Please try again.`
             });
         }
 
