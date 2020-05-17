@@ -32,6 +32,11 @@ a, span, p, ul, ol {
     color: rgba(136, 121, 82, 0.747);
 }
 
+.blog-post {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
 .gold-text {
     color: rgba(136, 121, 82, 0.747);
     font-weight: lighter;
