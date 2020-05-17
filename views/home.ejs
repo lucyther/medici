@@ -1,14 +1,12 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-<h2>This is the home page</h2>
+<!-- <h2>This is the home page</h2>
 <p>It's a test view</p>
 <ul>
   <% animals.forEach((animal) => { %>
   <li><%= animal.name %></li>
   <% }); %>
-</ul>
+</ul> -->
 
-<button class="btn btn-success">test button</button>
+<!-- <button class="btn btn-success">test button</button>
 
 <script>
     $('button').click(function () {
@@ -18,4 +16,22 @@
             console.log("status: ", status);
         })
     });
-</script>
+</script> -->
+
+
+<html>
+    <%- include('partials/head') %>
+    <body>
+        <%- include('partials/nav') %>
+
+        <section id="hero">
+        <div class="container">
+            <h1 class="display-1 font-weight-lighter"><span class="underline--magical-yellow-thick">Medici</span> </h1>
+            <h2 class="display-4 font-weight-lighter">The interest-earning wallet powered by decentralized finance.</h2>
+            Coming soon. <a href="/blog#about">Learn more</a>
+        </div>
+        </section>
+
+        <%- include('partials/footer') %>
+    </body>
+</html>
