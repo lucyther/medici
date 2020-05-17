@@ -13,8 +13,13 @@ a {
 
 .card.supply-card {
     border-width: 0px;
+    margin: .5em;
+    padding: .8em;
 }
 
+.supply-summary {
+    margin: 1em;
+}
 .highlight {
     font-weight: bold;
     color: #294;
@@ -35,7 +40,7 @@ a {
 }
 
 .underline--magical-yellow-thick {
-    background-image: linear-gradient(120deg, #FED766 0%, #f4ea8f 100%);
+    background-image: linear-gradient(120deg, rgba(201, 173, 122, 0.568) 0%, #f4ea8f 100%);
     background-repeat: no-repeat;
     background-size: 100% 0.4em;
     background-position: 0 88%;
@@ -48,18 +53,18 @@ a {
 }
 
 .btn-hover {
-    width: 200px;
+    width: 120px;
     font-size: 16px;
     font-weight: 600;
     color: #fff;
     cursor: pointer;
     margin: 20px;
-    height: 55px;
+    height: 45px;
     text-align:center;
     border: none;
     background-size: 300% 100%;
 
-    border-radius: 50px;
+    border-radius: 13px;
     moz-transition: all .4s ease-in-out;
     -o-transition: all .4s ease-in-out;
     -webkit-transition: all .4s ease-in-out;
@@ -96,7 +101,7 @@ a {
 }
 .btn-hover.color-5 {
     background-image: linear-gradient(to right, #d6d081, #e7e6a2, #beb426, #917f31);
-    box-shadow: 0 4px 15px 0 rgba(138, 138, 138, 0.75);
+    box-shadow: 0 2px 4px 0 rgba(138, 138, 138, 0.75);
 }
 .btn-hover.color-6 {
     background-image: linear-gradient(to right, #009245, #FCEE21, #00A8C5, #D9E021);
@@ -125,7 +130,7 @@ a {
 #walletButton {
     color: black;
     border-radius: 10px;
-    width: 70%;
+    width: 60%;
     margin: auto;
 }
 

@@ -20,55 +20,57 @@
             <section id="info">
 
                 <h1 class="display-4 font-weight-light"><span class="underline--magical-yellow-thick">Medici</span> </h1>
-                <h2 class="font-weight-lighter">The interest-earning wallet</h2>
+                <h2 class="font-weight-lighter">The fastest way to earn interest on your savings.</h2>
                 <button class="btn btn-hover color-5 font-weight-light" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
 
-                <h4 class="font-weight-light">Wallet Balance</h4>
-                <p class="font-weight-lighter" id="walletBalance"></p>
+                <h4 class="font-weight-lighter">Total Wallet Balance</h4>
+                <p class="font-weight" id="walletBalance"></p>
 
                 <!-- ETH SUPPLY -->
-                <h4 class="font-weight-light">Amount of ETH supplied</h4>
-                <div class="card supply-card mb-3 shadow-sm" style="max-width: 60%;">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                        <img src="https://1000logos.net/wp-content/uploads/2018/04/Ethereum-Logo.png" class="card-img">
+
+                <div class="supply-summary">
+                   
+                    <div class="card-columns d-flex justify-content-center">
+                        <div class="card supply-card shadow-sm">
+                        <div class="card-block">
+                            <h4 class="card-title font-weight-lighter"><i class="fab fa-ethereum"></i> ETH Supplied</h4>
+                            <p id="underlyingEth" class="card-text font-weight-lighter"></p>
                         </div>
-                        <div class="col-md-8">
-                        <div class="card-body">
-                            <p id="underlyingEth"></p>
+                        </div>
+                        <div class="card supply-card shadow-sm">
+                        <div class="card-block">
+                            <h4 class="card-title font-weight-lighter"><i class="fas fa-coins"></i> cTokens</h4>
+                            <p class="font-weight-lighter card-text" id="cTokens"></p>
+                            <p id="exchangeRate">Exchange rate: </p>
+                            <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
                         </div>
                         </div>
                     </div>
+
                 </div>
 
-                <h4>Portfolio value</h4>
+                <h4 class="font-weight-lighter">Portfolio value</h4>
 
                 <p id="currentValue"></p>
-                <!-- CTOKENS -->
-                
-                <h4 class="font-weight-light">cTokens</h4>
-                <p class="font-weight-lighter" id="cTokens"></p>
-                <p id="exchangeRate">Exchange rate: </p>
-                <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
                 
             </section>
         </div>
     
         <div class="card body-card shadow1">
-
+            <h3 class="display-5 font-weight-lighter"><span class="underline--magical-yellow-thick">Supply or Redeem</span> </h3>
             <!-- SUPPLY OR REDEEM -->
             <span id="spinner" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
             <p id="statusMessage"></p>
 
             <section id="supplyOrRedeem">
-                <h4 class="font-weight-light">Supply ETH to start earning interest</h4>
+                <h5 class="font-weight-light">Supply ETH to start earning interest</h5>
                 <form action="" id="supplyForm">
                     <input type="text" id="amountToSupply">
                     <input type="submit" class="btn btn-hover color-5 font-weight-light" id="supplyBtn" style="padding-top: .7rem;" value="SUPPLY">
                 </form>
 
 
-                <h4 class="font-weight-light">Redeem ETH from cETH</h4>
+                <h5 class="font-weight-light">Redeem ETH from cETH</h5>
                 <p id="cEthAvailable">cETH available: </p>
                 <form action="" id="redeemForm">
                     <input type="text" id="amountToRedeem">
@@ -122,7 +124,7 @@
                 suppliedAmount = web3.utils.fromWei(balance)
                 console.log("getting amount of ETH supplied to Compound...")
                 console.log("underlying eth: ", balanceOfUnderlying);
-                underlyingEth.innerHTML = balanceOfUnderlying;
+                underlyingEth.innerHTML = parseFloat(balanceOfUnderlying).toFixed(8) + " ETH";
             }).catch((error) => {
                 console.error('[wallet-token-balance] error: ', error);
             });
