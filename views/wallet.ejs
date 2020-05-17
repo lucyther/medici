@@ -30,10 +30,10 @@
             <section id="info">
 
                 <h1 class="display-4 font-weight-light"><span class="underline--magical-yellow-thick">Medici</span> </h1>
-                <h2 class="font-weight-lighter">The fastest way to earn interest.</h2>
+                <h2 class="font-weight-lighter">The fast and simple interest-earning wallet.</h2>
                 <button class="btn btn-hover color-5 font-weight-light" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
                 <br>
-                <span class="badge badge-dark" id='wyreBtn'>Add funds with a debit card</span>
+                <span class="badge badge-dark mb-2" id='wyreBtn'>Add funds with a debit card</span>
                 <h4 class="font-weight-lighter">Total Wallet Balance</h4>
                 <p class="font-weight" id="walletBalance"></p>
 
@@ -44,8 +44,9 @@
                     <div class="card-columns d-flex justify-content-center">
                         <div class="card supply-card shadow-sm">
                         <div class="card-block">
-                            <h4 class="card-title font-weight-lighter"><i class="fab fa-ethereum"></i> ETH Supplied</h4>
-                            <p id="underlyingEth" class="card-text font-weight-lighter"></p>
+                            <h4 class="card-title font-weight-lighter"><i class="fab fa-ethereum"></i> Deposited Balance</h4>
+                            <h5 id="underlyingEth" class="card-text font-weight-lighter"></h5>
+                            <p id="supplyRateInfo" class="small"></p>
                         </div>
                         </div>
                         <div class="card supply-card shadow-sm">
@@ -60,9 +61,9 @@
 
                 </div>
 
-                <h4 class="font-weight-lighter">Portfolio value</h4>
+                <!-- <h4 class="font-weight-lighter">Portfolio value</h4> -->
 
-                <p id="currentValue"></p>
+                <!-- <p id="currentValue"></p> -->
                 
             </section>
         </div>
@@ -74,21 +75,21 @@
             <p id="statusMessage"></p>
 
             <section id="supplyOrRedeem">
-                <h5 class="font-weight-light">Supply ETH to start earning interest</h5>
+                <h5 class="font-weight-light"><i class="fas fa-piggy-bank"></i> Supply ETH to start earning interest</h5>
+                <p id="supplyInterest" class="small" style="display: none;"></p>
                 <form action="" id="supplyForm">
                     <input type="text" id="amountToSupply">
                     <input type="submit" class="btn btn-hover color-5 font-weight-light" id="supplyBtn" style="padding-top: .7rem;" value="SUPPLY">
                 </form>
 
 
-                <h5 class="font-weight-light">Redeem ETH from cETH</h5>
+                <h5 class="font-weight-light"><i class="fas fa-hand-holding-usd"></i> Redeem ETH from cETH</h5>
                 <p id="cEthAvailable">cETH available: </p>
                 <form action="" id="redeemForm">
                     <input type="text" id="amountToRedeem">
                     <input type="submit" class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem;" value="REDEEM">
                 </form>
 
-                <!-- <a class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem; color: white">REDEEM</a> -->
                 <p id="cTokenToEth"></p>
             </section>
 
@@ -143,21 +144,6 @@
                 cTokens.innerHTML = cTokenBalance + " cETH";
                 cEthAvailable.innerHTML += " " + cTokenBalance + " cETH";
 
-                $.get('https://api.compound.finance/api/v2/ctoken?network=rinkeby', (data, status) => {
-                    ethExchangeRate = data.cToken[3].exchange_rate.value;
-                    console.log("exchange rate from API: ", ethExchangeRate)
-                    console.log("cTokens supplied: ", cTokenBalance)
-                    var ethValue = cTokenBalance * ethExchangeRate;
-                    console.log("total eth value: ", ethValue);
-
-                    var yield = (ethValue - suppliedAmount) / suppliedAmount;
-                    var amountEarned = ethValue - suppliedAmount;
-
-                    currentValue.innerHTML = ethValue.toFixed(4) + " ETH (" + yield.toFixed(3) + "%)" 
-                    exchangeRate.innerHTML += "1 cETH = " + parseFloat(ethExchangeRate).toFixed(6) + " ETH"
-                })
-
-
             }).catch((error) => {
                 console.error('[wallet-ctoken-balance] error: ', error);
             })
@@ -166,6 +152,37 @@
             console.error('[get accounts] error: ', error)
         });
         
+
+        // Interest being earned
+        // Supply rate: the amount of ETH, per block, that is added to each of your supplied ETH. 
+        // This is calculated using the prevailing interest rate for this cToken.
+        // Each supplied ETH will increase by ${interestPerEthThisBlock} based on the current interest rate
+        cEthContract.methods.supplyRatePerBlock().call().then((supplyRatePerBlock) => { 
+            const interestPerEthThisBlock = supplyRatePerBlock / 1e18
+            console.log("each supplied ETH will increase by " + interestPerEthThisBlock + " per Ethereum block (every ~15 seconds) based on the current interest rate")
+            $('#supplyRateInfo').append("Each supplied ETH will increase by <b>" + interestPerEthThisBlock + "</b> per Ethereum block (every ~15 seconds) based on the current interest rate")
+        }).catch((error) => {
+            console.error('[supply-rate] error: ', error);
+        })
+        
+
+        $.get('https://api.compound.finance/api/v2/ctoken?network=rinkeby', (data, status) => {
+            ethExchangeRate = data.cToken[3].exchange_rate.value;      
+            console.log("exchange rate from API: ", ethExchangeRate)
+            const ethSupplyRate = data.cToken[3].supply_rate.value;
+            console.log("supply interest rate from API: ", ethSupplyRate)
+            // console.log("cTokens supplied: ", cTokenBalance)
+            // var ethValue = cTokenBalance * ethExchangeRate;
+            // console.log("total eth value: ", ethValue);
+
+            // var yield = (ethValue - suppliedAmount) / suppliedAmount;
+            // var amountEarned = ethValue - suppliedAmount;
+
+            // currentValue.innerHTML = ethValue.toFixed(4) + " ETH (" + yield.toFixed(3) + "%)" 
+            supplyInterest.innerHTML = "Supply interest rate: " + parseFloat(ethSupplyRate).toFixed(5);
+            exchangeRate.innerHTML += "1 cETH = " + parseFloat(ethExchangeRate).toFixed(6) + " ETH";
+        })
+
         // var supplyButton = document.getElementById('supplyBtn');
         var supplyForm = document.getElementById('supplyForm');
 
@@ -221,7 +238,7 @@
             }).then((result) => {
                 console.log("result from redeeming: ", result)
                 $('#spinner').hide();
-                statusMessage.innerHTML = `💸 You have redeemed ETH with your cETH! Transaction hash: ` +  `<a target="_blank" href="https://rinkeby.etherscan.io/tx/` + result.transactionHash + `">` + result.transactionHash + `</a>`
+                statusMessage.innerHTML = `💸 Redeemed ETH from cETH! Transaction hash: ` +  `<a target="_blank" href="https://rinkeby.etherscan.io/tx/` + result.transactionHash + `">` + result.transactionHash + `</a>`
             }).catch((error) => {
                 console.error('[redeem] error: ', error);
                 $('#spinner').hide();
