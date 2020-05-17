@@ -6,7 +6,7 @@ html {
 body {
     /* Margin bottom by slightly more than footer height */
     margin-bottom: 150px; 
-  }
+}
 
 .footer {
     position: absolute;
@@ -19,8 +19,23 @@ body {
   
 
   
-a {
+a, span, p, ul, ol {
     display: inline-block;
+    font-family: 'Hind', sans-serif;
+}
+
+#hero {
+    margin-top: 5%;
+}
+
+#blog-content a {
+    color: rgba(136, 121, 82, 0.747);
+}
+
+.gold-text {
+    color: rgba(136, 121, 82, 0.747);
+    font-weight: lighter;
+    font-size: 1.1em;
 }
 
 .card.body-card {
