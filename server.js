@@ -144,11 +144,7 @@ app.get('/', (req, res) => {
 
 app.get('/blog', (req, res) => {
   res.render('blog');
-})
-
-app.get('/about', (req, res) => {
-  res.render('about');
-})
+});
 
 app.get('/newAnimals', function (req, res) {
   console.log('replying with new animals!');
