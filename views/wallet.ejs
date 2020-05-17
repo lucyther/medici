@@ -45,9 +45,10 @@
 
                 <p id="currentValue"></p>
                 <!-- CTOKENS -->
-                <p id="exchangeRate">Exchange rate: </p>
+                
                 <h4 class="font-weight-light">cTokens</h4>
                 <p class="font-weight-lighter" id="cTokens"></p>
+                <p id="exchangeRate">Exchange rate: </p>
                 <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
                 
             </section>
@@ -57,7 +58,7 @@
 
             <!-- SUPPLY OR REDEEM -->
             <section id="supplyOrRedeem">
-                    
+                <h4 class="font-weight-light">Supply ETH to start earning interest</h4>
                 <form action="" id="supplyForm">
                     <input type="text" id="amountToSupply">
                     <input type="submit" class="btn btn-hover color-5 font-weight-light" id="supplyBtn" style="padding-top: .7rem;" value="SUPPLY">
@@ -65,8 +66,14 @@
 
 
                 <h4 class="font-weight-light">Redeem ETH from cETH</h4>
-                
-                <a class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem; color: white">REDEEM</a>
+                <p id="cEthAvailable">cETH available: </p>
+                <form action="" id="redeemForm">
+                    <input type="text" id="amountToRedeem">
+                    <input type="submit" class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem;" value="REDEEM">
+                </form>
+
+                <!-- <a class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem; color: white">REDEEM</a> -->
+                <p id="cTokenToEth"></p>
                 <p id="status"></p>
                 <p id="successMessage"></p>
             </section>
@@ -92,6 +99,7 @@
         var myWalletAddress;
         var cTokenBalance; 
         var suppliedAmount;
+        var ethExchangeRate;
 
         web3.eth.getAccounts().then((accounts) => {
             console.log("[getAccounts] accounts: ", accounts)
@@ -125,10 +133,11 @@
                 cTokenBalance = result / 1e8
                 console.log("[wallet-ctoken-balance] obtained cToken balance");
                 cTokens.innerHTML = cTokenBalance + " cETH";
+                cEthAvailable.innerHTML += " " + cTokenBalance + " cETH";
 
                 $.get('https://api.compound.finance/api/v2/ctoken', (data, status) => {
                     console.log("ctokens result: ", data.cToken[7]["exchange_rate"])
-                    var ethExchangeRate = data.cToken[7]["exchange_rate"].value;
+                    ethExchangeRate = data.cToken[7]["exchange_rate"].value;
                     
                     console.log("cTokens supplied: ", cTokenBalance)
                     var ethValue = cTokenBalance * ethExchangeRate;
@@ -138,7 +147,7 @@
                     var amountEarned = ethValue - suppliedAmount;
 
                     currentValue.innerHTML = ethValue.toFixed(4) + " ETH (" + yield.toFixed(3) + "%)" 
-                    exchangeRate.innerHTML += parseFloat(ethExchangeRate).toFixed(5)
+                    exchangeRate.innerHTML += "1 cETH = " + parseFloat(ethExchangeRate).toFixed(5) + " ETH"
                 })
 
 
@@ -151,7 +160,7 @@
         });
         
         // var supplyButton = document.getElementById('supplyBtn');
-        var supplyForm = document.getElementById('supplyForm')
+        var supplyForm = document.getElementById('supplyForm');
 
         supplyForm.onsubmit = function(event){
             console.log("supply button clicked!");
@@ -175,12 +184,19 @@
         }
 
         // Redeem cETH
-        var redeemButton = document.getElementById('redeemBtn');
-        redeemButton.onclick = async function() {
-            
-            console.log("Exchanging all cETH based on underlying ETH amount...");
+        $('#amountToRedeem').on('input', (event) => {
+            console.log("input received");
+            var input = $('#amountToRedeem').val()
+            cTokenToEth.innerHTML = input * ethExchangeRate + " ETH";
+        });
 
-            cEthContract.methods.redeem(Math.floor(cTokenBalance * 1e8)).send({
+        var redeemForm = document.getElementById('redeemForm');
+        redeemForm.onsubmit = function(event){
+            console.log("redeem button clicked!");
+            event.preventDefault();
+            console.log("Exchanging all cETH based on underlying ETH amount...");
+            var amount = $('#amountToRedeem').val()
+            cEthContract.methods.redeem(Math.floor(amount * 1e8)).send({
                 from: myWalletAddress,
                 gasLimit: web3.utils.toHex(500000),
                 gasPrice: web3.utils.toHex(20000000000),
