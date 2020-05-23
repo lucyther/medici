@@ -34,44 +34,81 @@
                 <h1 class="display-4 font-weight-light"><span class="underline--magical-yellow-thick">Medici</span> </h1>
                 <p class="small">NOTE: This is a demo wallet running on the <b>Rinkeby</b> test network.</p>
                 <h2 class="font-weight-lighter">The fast and simple interest-earning wallet.</h2>
-                <button class="btn btn-hover color-5 font-weight-light" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
+                <button class="btn btn-hover color-5 font-weight-light wallet-btn" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
                 <br>
-                <span class="badge badge-dark mb-2" id='wyreBtn'>Add funds with a debit card</span>
-                <h4 class="font-weight-lighter">Total Wallet Balance</h4>
-                <p class="font-weight" id="walletBalanceEth"></p>
-                <p id="walletBalanceDai"></p>
+                <button class="btn btn-hover color-8 font-weight-light wallet-btn" id="wyreBtn" style="margin-bottom: 1em; color: white"><i class="far fa-credit-card"></i> Fund wallet with debit card </button>
 
+                <h4 class="font-weight-lighter">Wallet Balances</h4>
+                <div class="card supply-card shadow-sm">
+                    <div class="card-block">
+                        <h5 id="walletBalanceEth"></p>
+
+                    </div>
+                </div>
+                <div class="card supply-card shadow-sm">
+                    <div class="card-block">
+                        <h5 id="walletBalanceDai"></p>
+                    </div>
+                </div>
+                
+                <hr>
+
+                <h4 class="font-weight-lighter">Deposited Balances</h4>
+                <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
+                <!-- DAI SUPPLY -->
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">◈ DAI</th>
+                        <th scope="col"><i class="fas fa-coins"></i> cDAI</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td id="underlyingDai"></td>
+                        <td id="cTokensDai"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <p id="exchangeRateDai"></p>
+                  <br>
+                 
                 <!-- ETH SUPPLY -->
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><i class="fab fa-ethereum"></i> ETH</th>
+                        <th scope="col"><i class="fas fa-coins"></i> cETH</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td id="underlyingEth"></td>
+                        <td id="cTokensEth"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p id="exchangeRateEth"></p>
 
-                <div class="supply-summary">
+
+                <!-- <div class="supply-summary">
                    
                     <div class="card-columns d-flex justify-content-center">
                         <div class="card supply-card shadow-sm">
                         <div class="card-block">
                             <h4 class="card-title font-weight-lighter"><i class="fab fa-ethereum"></i> Deposited Balance</h4>
-                            <h5 id="underlyingEth" class="card-text font-weight-lighter"></h5>
-                            
-                            <h5 id="underlyingDai" class="card-text font-weight-lighter"></h5>
                         </div>
                         </div>
                         <div class="card supply-card shadow-sm">
                         <div class="card-block">
                             <h4 class="card-title font-weight-lighter"><i class="fas fa-coins"></i> cTokens</h4>
-                            <p class="font-weight-lighter card-text" id="cTokensEth"></p>
-                            <p class="font-weight-lighter card-text" id="cTokensDai"></p>
-                            <p id="exchangeRateEth">ETH Exchange rate: </p>
-                            <p id="exchangeRateDai">DAI Exchange rate: </p>
-                            <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
                         </div>
                         </div>
                     </div>
 
-                </div>
+                </div> -->
 
-                <!-- <h4 class="font-weight-lighter">Portfolio value</h4> -->
-
-                <!-- <p id="currentValue"></p> -->
-                
             </section>
         </div>
 
@@ -154,7 +191,9 @@
 
         web3.eth.getAccounts().then((accounts) => {
             console.log("[getAccounts] accounts: ", accounts)
-            walletButton.innerHTML += accounts[0];
+            // show the first and last few digits
+            var acct = accounts[0]
+            walletButton.innerHTML += acct.substring(0, 7) + "..." + acct.substring(35);
             myWalletAddress = accounts[0]
 
             ////////////////// ETH //////////////////
@@ -173,7 +212,7 @@
 
                 console.log("getting amount of ETH supplied to Compound...")
                 console.log("underlying eth: ", suppliedEth);
-                underlyingEth.innerHTML = parseFloat(suppliedEth.toString()).toFixed(9) + " ETH";
+                underlyingEth.innerHTML = parseFloat(suppliedEth.toString()).toFixed(9);
             }).catch((error) => {
                 console.error('[wallet-token-balance] error: ', error);
             });
@@ -184,8 +223,8 @@
             .then((result) => {
                 cTokenBalance = result / 1e8
                 console.log("[wallet-ctoken-balance] obtained cToken balance");
-                cTokensEth.innerHTML = cTokenBalance + " cETH";
-                cEthAvailable.innerHTML += " " + cTokenBalance + " cETH";
+                cTokensEth.innerHTML = cTokenBalance;
+                cEthAvailable.innerHTML += " " + cTokenBalance;
 
             }).catch((error) => {
                 console.error('[wallet-ctoken-balance] error: ', error);
@@ -209,7 +248,7 @@
                 suppliedDai = web3.utils.fromWei(balance);
                 console.log("underlying dai: ", suppliedDai);
 
-                underlyingDai.innerHTML = parseFloat(suppliedDai.toString()).toFixed(9) + " DAI";
+                underlyingDai.innerHTML = parseFloat(suppliedDai.toString()).toFixed(9);
             }).catch((error) => {
                 console.error('[wallet-dai-balance] error: ', error)
             })
@@ -219,8 +258,8 @@
             .then((result) => {
                 cDaiBalance = result / 1e8;
                 console.log("[wallet-cdai-balance] obtained cDai balance: ", cDaiBalance)
-                cTokensDai.innerHTML = cDaiBalance + " cDAI";;
-                cDaiAvailable.innerHTML += " " + cDaiBalance + " cDAI";
+                cTokensDai.innerHTML = cDaiBalance;
+                cDaiAvailable.innerHTML += " " + cDaiBalance;
             }).catch((error) => {
                 console.error('[wallet-cdai-balance] error: ', error)
             })
@@ -393,8 +432,8 @@
             console.log("updating...")
             suppliedEth *= (1 + ethInterestPerBlock / 5);
             suppliedDai *= (1 + daiInterestPerBlock / 5);
-            underlyingEth.innerHTML = suppliedEth.toFixed(9) + " ETH";
-            underlyingDai.innerHTML = suppliedDai.toFixed(9) + " DAI";
+            underlyingEth.innerHTML = suppliedEth.toFixed(9);
+            underlyingDai.innerHTML = suppliedDai.toFixed(9);
         }
 
         // Open portis wallet

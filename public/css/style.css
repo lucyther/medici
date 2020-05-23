@@ -46,7 +46,6 @@ a, span, p, ul, ol {
 .card.body-card {
     padding: 40px;
     background: #fff;
-    max-width: 80%;
     border-radius: 20px;
     margin: 60px auto;
     border: white;
@@ -141,7 +140,7 @@ a, span, p, ul, ol {
     box-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
 }
 .btn-hover.color-5 {
-    background-image: linear-gradient(to right, #d6d081, #e7e6a2, #beb426, #917f31);
+    background-image: linear-gradient(to right, #f0e596, #dad2a8, #beb426, #917f31);
     box-shadow: 0 2px 4px 0 rgba(138, 138, 138, 0.75);
 }
 .btn-hover.color-6 {
@@ -168,10 +167,10 @@ a, span, p, ul, ol {
        background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);  box-shadow: 0 5px 15px rgba(242, 97, 103, .4);
 }
 
-#walletButton {
+.btn.wallet-btn {
     color: black;
     border-radius: 10px;
-    width: 60%;
+    width: 100%;
     margin: auto;
 }
 
