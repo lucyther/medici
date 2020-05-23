@@ -50,15 +50,17 @@
                         <div class="card-block">
                             <h4 class="card-title font-weight-lighter"><i class="fab fa-ethereum"></i> Deposited Balance</h4>
                             <h5 id="underlyingEth" class="card-text font-weight-lighter"></h5>
-                            <p id="supplyRateInfo" class="small"></p>
+                            
                             <h5 id="underlyingDai" class="card-text font-weight-lighter"></h5>
                         </div>
                         </div>
                         <div class="card supply-card shadow-sm">
                         <div class="card-block">
                             <h4 class="card-title font-weight-lighter"><i class="fas fa-coins"></i> cTokens</h4>
-                            <p class="font-weight-lighter card-text" id="cTokens"></p>
-                            <p id="exchangeRate">Exchange rate: </p>
+                            <p class="font-weight-lighter card-text" id="cTokensEth"></p>
+                            <p class="font-weight-lighter card-text" id="cTokensDai"></p>
+                            <p id="exchangeRateEth">ETH Exchange rate: </p>
+                            <p id="exchangeRateDai">DAI Exchange rate: </p>
                             <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
                         </div>
                         </div>
@@ -88,9 +90,12 @@
             <span id="spinner" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
             <p id="statusMessage"></p>
 
+            <p id="supplyRateInfoEth" class="small"></p>
+            <p id="supplyRateInfoDai" class="small"></p>
+
             <section id="supplyOrRedeem">
                 <h5 class="font-weight-light"><i class="fas fa-piggy-bank"></i> Supply ETH to start earning interest</h5>
-                <p id="supplyInterest" class="small" style="display: none;"></p>
+                <p id="supplyInterestEth" class="small" style="display: none;"></p>
                 <form action="" id="supplyForm">
                     <input type="text" id="amountToSupply">
                     <input type="submit" class="btn btn-hover color-5 font-weight-light" id="supplyBtn" style="padding-top: .7rem;" value="SUPPLY">
@@ -133,11 +138,20 @@
         const daiContract = new web3.eth.Contract(daiAbiJson, daiContractAddress);
 
         var myWalletAddress;
+        // cTokens
         var cTokenBalance; 
         var cDaiBalance;
-        var suppliedAmount;
+        // Supplied to compound (underlying)
+        var suppliedEth;
+        var suppliedDai;
+        // Exchange rates
         var ethExchangeRate;
         var daiExchangeRate;
+        // Supply rates
+        var ethSupplyRate;
+        var daiSupplyRate;
+        var ethInterestPerBlock;
+        var daiInterestPerBlock;
         
 
         web3.eth.getAccounts().then((accounts) => {
@@ -157,11 +171,11 @@
 
             // Get the amount of ETH supplied by the user
             cEthContract.methods.balanceOfUnderlying(myWalletAddress).call().then((balance) => {
-                let balanceOfUnderlying = web3.utils.fromWei(balance).toString();
-                suppliedAmount = web3.utils.fromWei(balance)
+                suppliedEth = web3.utils.fromWei(balance);
+
                 console.log("getting amount of ETH supplied to Compound...")
-                console.log("underlying eth: ", balanceOfUnderlying);
-                underlyingEth.innerHTML = parseFloat(balanceOfUnderlying).toFixed(8) + " ETH";
+                console.log("underlying eth: ", suppliedEth);
+                underlyingEth.innerHTML = parseFloat(suppliedEth.toString()).toFixed(8) + " ETH";
             }).catch((error) => {
                 console.error('[wallet-token-balance] error: ', error);
             });
@@ -172,7 +186,7 @@
             .then((result) => {
                 cTokenBalance = result / 1e8
                 console.log("[wallet-ctoken-balance] obtained cToken balance");
-                cTokens.innerHTML = cTokenBalance + " cETH";
+                cTokensEth.innerHTML = cTokenBalance + " cETH";
                 cEthAvailable.innerHTML += " " + cTokenBalance + " cETH";
 
             }).catch((error) => {
@@ -194,9 +208,10 @@
 
             // Get the amount of DAI supplied by the user
             cDaiContract.methods.balanceOfUnderlying(myWalletAddress).call().then((balance) => {
-                let balanceOfUnderlying = web3.utils.fromWei(balance).toString();
-                console.log("underlying dai: ", balanceOfUnderlying);
-                underlyingDai.innerHTML = parseFloat(balanceOfUnderlying).toFixed(8) + " DAI";
+                suppliedDai = web3.utils.fromWei(balance);
+                console.log("underlying dai: ", suppliedDai);
+
+                underlyingDai.innerHTML = parseFloat(suppliedDai.toString()).toFixed(8) + " DAI";
             }).catch((error) => {
                 console.error('[wallet-dai-balance] error: ', error)
             })
@@ -206,6 +221,7 @@
             .then((result) => {
                 cDaiBalance = result / 1e8;
                 console.log("[wallet-cdai-balance] obtained cDai balance: ", cDaiBalance)
+                cTokensDai.innerHTML = cDaiBalance + " cDAI";;
                 cDaiAvailable.innerHTML += " " + cDaiBalance + " cDAI";
             }).catch((error) => {
                 console.error('[wallet-cdai-balance] error: ', error)
@@ -214,29 +230,19 @@
         }).catch((error) => {
             console.error('[get accounts] error: ', error)
         });
-        
-
-        // Interest being earned
-        // Supply rate: the amount of ETH, per block, that is added to each of your supplied ETH. 
-        // This is calculated using the prevailing interest rate for this cToken.
-        // Each supplied ETH will increase by ${interestPerEthThisBlock} based on the current interest rate
-        cEthContract.methods.supplyRatePerBlock().call().then((supplyRatePerBlock) => { 
-            const interestPerEthThisBlock = supplyRatePerBlock / 1e18
-            console.log("each supplied ETH will increase by " + interestPerEthThisBlock + " per Ethereum block (every ~15 seconds) based on the current interest rate")
-            $('#supplyRateInfo').append("Each supplied ETH will increase by <b>" + interestPerEthThisBlock + "</b> per Ethereum block (every ~15 seconds) based on the current interest rate")
-        }).catch((error) => {
-            console.error('[supply-rate] error: ', error);
-        })
-        
+    
 
         $.get('https://api.compound.finance/api/v2/ctoken?network=rinkeby', (data, status) => {
             ethExchangeRate = data.cToken[3].exchange_rate.value;
+            ethSupplyRate = data.cToken[3].supply_rate.value;
             daiExchangeRate = data.cToken[2].exchange_rate.value;
+            daiSupplyRate = data.cToken[2].supply_rate.value;
 
             console.log("exchange rate from API (eth): ", ethExchangeRate)
             console.log("exchange rate from API (dai): ", daiExchangeRate)
-            const ethSupplyRate = data.cToken[3].supply_rate.value;
-            console.log("supply interest rate from API: ", ethSupplyRate)
+            
+            console.log("supply interest rate from API (eth): ", ethSupplyRate)
+            console.log("supply interest rate from API (dai): ", daiSupplyRate)
             // console.log("cTokens supplied: ", cTokenBalance)
             // var ethValue = cTokenBalance * ethExchangeRate;
             // console.log("total eth value: ", ethValue);
@@ -245,9 +251,35 @@
             // var amountEarned = ethValue - suppliedAmount;
 
             // currentValue.innerHTML = ethValue.toFixed(4) + " ETH (" + yield.toFixed(3) + "%)" 
-            supplyInterest.innerHTML = "Supply interest rate: " + parseFloat(ethSupplyRate).toFixed(5);
-            exchangeRate.innerHTML += "1 cETH = " + parseFloat(ethExchangeRate).toFixed(6) + " ETH";
+            supplyInterestEth.innerHTML = "Supply interest rate: " + parseFloat(ethSupplyRate).toFixed(5);
+            exchangeRateEth.innerHTML += "1 cETH = " + parseFloat(ethExchangeRate).toFixed(6) + " ETH";
+            exchangeRateDai.innerHTML += "1 cDAI = " + parseFloat(daiExchangeRate).toFixed(6) + " DAI";
         })
+
+
+        // Interest being earned
+        // Supply rate: the amount of ETH, per block, that is added to each of your supplied ETH. 
+        // This is calculated using the prevailing interest rate for this cToken.
+        // Each supplied ETH will increase by ${interestPerEthThisBlock} based on the current interest rate
+        cEthContract.methods.supplyRatePerBlock().call().then((supplyRatePerBlock) => { 
+            // const interestPerEthThisBlock = supplyRatePerBlock / 1e18
+            ethInterestPerBlock = supplyRatePerBlock / 1e18;
+            console.log("each supplied ETH will increase by " + ethInterestPerBlock + " per Ethereum block (every ~15 seconds) based on the current interest rate")
+            $('#supplyRateInfoEth').append("Each supplied ETH will increase by <b>" + ethInterestPerBlock + "</b> per Ethereum block (every ~15 seconds) based on the current interest rate of " + ethSupplyRate);
+
+        }).catch((error) => {
+            console.error('[supply-rate] error: ', error);
+        })
+        
+        cDaiContract.methods.supplyRatePerBlock().call().then((supplyRatePerBlock) => { 
+            daiInterestPerBlock = supplyRatePerBlock / 1e18
+            console.log("each supplied DAI will increase by " + daiInterestPerBlock + " per Ethereum block (every ~15 seconds) based on the current interest rate")
+            $('#supplyRateInfoDai').append("Each supplied DAI will increase by <b>" + daiInterestPerBlock + "</b> per Ethereum block (every ~15 seconds) based on the current interest rate of " + daiSupplyRate);
+
+        }).catch((error) => {
+            console.error('[supply-rate] error: ', error);
+        })
+
 
         // var supplyButton = document.getElementById('supplyBtn');
         var supplyForm = document.getElementById('supplyForm');
@@ -358,6 +390,19 @@
                     statusMessage.innerHTML = `🚨 Something went wrong. Please try again.`
                 });
             }
+        }
+
+
+        // Dynamically update balances
+        setInterval(updateBalance, 5000);
+
+        function updateBalance() {
+            // TODO: update to directly refresh from AccountService API's supply_balance_underlying
+            console.log("updating...")
+            suppliedEth *= (1 + ethInterestPerBlock);
+            suppliedDai *= (1 + daiInterestPerBlock);
+            underlyingEth.innerHTML = suppliedEth.toFixed(8) + " ETH";
+            underlyingDai.innerHTML = suppliedDai.toFixed(8) + " DAI";
         }
 
         // Open portis wallet
