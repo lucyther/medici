@@ -99,12 +99,14 @@
 
                 <h5 class="font-weight-light"><i class="fas fa-hand-holding-usd"></i> Redeem ETH from cETH</h5>
                 <p id="cEthAvailable">cETH available: </p>
+                <p id="cDaiAvailable">cDAI available: </p>
                 <form action="" id="redeemForm">
                     <input type="text" id="amountToRedeem">
                     <input type="submit" class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem;" value="REDEEM">
                 </form>
 
                 <p id="cTokenToEth"></p>
+                <p id="cTokenToDai"></p>
             </section>
 
         </div>
@@ -135,6 +137,7 @@
         var cDaiBalance;
         var suppliedAmount;
         var ethExchangeRate;
+        var daiExchangeRate;
         
 
         web3.eth.getAccounts().then((accounts) => {
@@ -203,6 +206,7 @@
             .then((result) => {
                 cDaiBalance = result / 1e8;
                 console.log("[wallet-cdai-balance] obtained cDai balance: ", cDaiBalance)
+                cDaiAvailable.innerHTML += " " + cDaiBalance + " cDAI";
             }).catch((error) => {
                 console.error('[wallet-cdai-balance] error: ', error)
             })
@@ -226,8 +230,11 @@
         
 
         $.get('https://api.compound.finance/api/v2/ctoken?network=rinkeby', (data, status) => {
-            ethExchangeRate = data.cToken[3].exchange_rate.value;      
-            console.log("exchange rate from API: ", ethExchangeRate)
+            ethExchangeRate = data.cToken[3].exchange_rate.value;
+            daiExchangeRate = data.cToken[2].exchange_rate.value;
+
+            console.log("exchange rate from API (eth): ", ethExchangeRate)
+            console.log("exchange rate from API (dai): ", daiExchangeRate)
             const ethSupplyRate = data.cToken[3].supply_rate.value;
             console.log("supply interest rate from API: ", ethSupplyRate)
             // console.log("cTokens supplied: ", cTokenBalance)
@@ -293,71 +300,65 @@
             }
         }
 
-        // Redeem cETH
+        // Redeem cTokens
         $('#amountToRedeem').on('input', (event) => {
             console.log("input received");
-            var input = $('#amountToRedeem').val()
-            cTokenToEth.innerHTML = input * ethExchangeRate + " ETH";
+            var tokenType = $('#token-select').val();
+            var input = $('#amountToRedeem').val();
+
+            if (tokenType == 'eth') {
+                cTokenToEth.innerHTML = input * ethExchangeRate + " ETH";
+            } else if (tokenType == 'dai') {
+                cTokenToDai.innerHTML = input * daiExchangeRate + " DAI";
+            }
         });
 
         var redeemForm = document.getElementById('redeemForm');
         redeemForm.onsubmit = function(event){
             console.log("redeem button clicked!");
+            var tokenType = $('#token-select').val();
+            console.log("supply button clicked! token selected: ", tokenType);
             event.preventDefault();
-            console.log("Exchanging all cETH based on underlying ETH amount...");
+
+            console.log("Exchanging all cToken based on underlying token (ETH or DAI) amount...");
             
 
             var amount = $('#amountToRedeem').val();
 
             $('#spinner').show();
-            $('#statusMessage').append("<span>Redeeming " + amount + " cETH for ETH...</span>");
+            $('#statusMessage').append("<span>Redeeming " + amount + " c" + tokenType +  " for " + tokenType + "...</span>");
 
-            cEthContract.methods.redeem(Math.floor(amount * 1e8)).send({
-                from: myWalletAddress,
-                gasLimit: web3.utils.toHex(500000),
-                gasPrice: web3.utils.toHex(20000000000),
-            }).then((result) => {
-                console.log("result from redeeming: ", result)
-                $('#spinner').hide();
-                statusMessage.innerHTML = `💸 Redeemed ETH from cETH! Transaction hash: ` +  `<a target="_blank" href="https://rinkeby.etherscan.io/tx/` + result.transactionHash + `">` + result.transactionHash + `</a>`
-            }).catch((error) => {
-                console.error('[redeem] error: ', error);
-                $('#spinner').hide();
-                statusMessage.innerHTML = `🚨 Something went wrong. Please try again.`
-            });
-        }
-
-        $('#supplyDaiButton').click(() => {
-            console.log("supplying some dai...")
-            const dai = 4e18
-            daiContract.methods.approve(cDaiContractAddress, web3.utils.toBN(dai)).send({
-                from: myWalletAddress,
-                gasLimit: web3.utils.toHex(500000),
-                gasPrice: web3.utils.toHex(20000000000)
-            }).then((result) => {
-                console.log("DAI contract Approve operation successful. Minting some DAI");
-                cDaiContract.methods.mint(web3.utils.toBN(dai)).send({
+            if (tokenType == 'eth') {
+                cEthContract.methods.redeem(Math.floor(amount * 1e8)).send({
                     from: myWalletAddress,
-                    gasLimit: web3.utils.toHex(600000),
+                    gasLimit: web3.utils.toHex(500000),
+                gasPrice: web3.utils.toHex(20000000000),
+                }).then((result) => {
+                    console.log("result from redeeming: ", result)
+                    $('#spinner').hide();
+                    statusMessage.innerHTML = `💸 Redeemed ETH from cETH! Transaction hash: ` +  `<a target="_blank" href="https://rinkeby.etherscan.io/tx/` + result.transactionHash + `">` + result.transactionHash + `</a>`
+                }).catch((error) => {
+                    console.error('[redeem] error: ', error);
+                    $('#spinner').hide();
+                    statusMessage.innerHTML = `🚨 Something went wrong. Please try again.`
+                });
+            } else if (tokenType == 'dai') {
+                const daiToRedeem = amount * 1e8
+                cDaiContract.methods.redeem(daiToRedeem).send({
+                    from: myWalletAddress,
+                    gasLimit: web3.utils.toHex(500000),
                     gasPrice: web3.utils.toHex(20000000000),
                 }).then((result) => {
-                    console.log('cDAI "Mint" operation successful: ', result);
+                    console.log("result from redeeming cDAI: ", result);
+                    $('#spinner').hide();
+                    statusMessage.innerHTML = `💸 Redeemed DAI from cDAI! Transaction hash: ` +  `<a target="_blank" href="https://rinkeby.etherscan.io/tx/` + result.transactionHash + `">` + result.transactionHash + `</a>`
+                }).catch((error) => {
+                    console.error('[redeem] error: ', error);
+                    $('#spinner').hide();
+                    statusMessage.innerHTML = `🚨 Something went wrong. Please try again.`
                 });
-            })
-        })
-
-        $('#redeemDaiButton').click(() => {
-            console.log("redeeming cDAI for DAI...");
-            cDaiContract.methods.redeem(Math.floor(8*1e8)).send({
-                from: myWalletAddress,
-                gasLimit: web3.utils.toHex(500000),
-                gasPrice: web3.utils.toHex(20000000000),
-            }).then((result) => {
-                console.log("result from redeeming cDAI: ", result)
-            }).catch((error) => {
-                console.error('[redeem] error: ', error);
-            });
-        })
+            }
+        }
 
         // Open portis wallet
         $('#walletButton').click(() => {
