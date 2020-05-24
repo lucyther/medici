@@ -12,7 +12,8 @@
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 
     <!-- GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
 
     <!-- AOS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -35,11 +36,12 @@
     <div class="container">
 
         <div class="card body-card shadow1">
-            <section id="info" data-aos="fade-down" data-aos-delay="300">
+            <section id="info">
 
-                <h1 class="display-4 font-weight-light"><span class="underline--magical-yellow-thick">Medici</span> </h1>
+                <h1 class="display-4 font-weight-lighter"><span class="underline--magical-yellow-thick">MEDICI</span> </h1>
                 <p class="small">NOTE: This is a demo wallet running on the <b>Rinkeby</b> test network.</p>
-                <h2 class="font-weight-lighter">The fast and simple interest-earning wallet.</h2>
+                <h2 class="font-weight-lighter">The interest-earning wallet for stable digital currencies.</h2>
+                <!-- <h3 class="font-weight-lighter">Deposit with a debit card.</h3> -->
                 <button class="btn btn-hover color-5 font-weight-light wallet-btn" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
                 <br>
 
@@ -100,20 +102,21 @@
                 <h4 class="font-weight-lighter">Wallet Balances</h4>
                 <div class="card supply-card shadow-sm">
                     <div class="card-block">
-                        <h5 id="walletBalanceEth"></p>
-
+                        <img src="https://dynamic-assets.coinbase.com/90184cca292578d533bb00d9ee98529b889c15126bb120582309286b9129df9886781b30c85c21ee9cae9f2db6dc11e88633c7361fdd1ba5046ea444e101ae15/asset_icons/ebc24b163bf1f58a9732a9a1d2faa5b2141b041d754ddc2260c5e76edfed261e.png" width="30px" alt="">
+                        <h5 id="walletBalanceDai"></p>
                     </div>
                 </div>
                 <div class="card supply-card shadow-sm">
                     <div class="card-block">
-                        <h5 id="walletBalanceDai"></p>
+                        <img src="https://ethereum.org/assets/img/ethereum-icon-black.bfc04ac7.jpg" width="30px" alt="" style="display: inline-block;">
+                        <h5 id="walletBalanceEth"></p>
                     </div>
                 </div>
-                
+        
                 <hr>
 
                 <h4 class="font-weight-lighter">Deposited Balances</h4>
-                <p class="small">cTokens represent your balance in the <span class="gold-text">Compound protocol</span>, and accrue interest over time.</p>
+                <p class="small">cTokens represent your balance in the <span class="gold-text"><strong>Compound protocol</strong></span>, and accrue interest over time.</p>
                 <!-- DAI SUPPLY -->
                 <table class="table">
                     <thead>
@@ -172,7 +175,7 @@
         </div>
 
         <div class="card body-card shadow1" data-aos="fade-up" data-aos-delay="300">
-            <h3 class="display-5 font-weight-lighter"><span class="underline--magical-yellow-thick">Supply or Redeem</span> </h3>
+            <h3 class="display-5 font-weight-lighter"><span class="underline--magical-yellow-thick">SUPPLY OR REDEEM</span> </h3>
             <!-- SUPPLY OR REDEEM -->
 
             <select class="custom-select" id="token-select" style="margin-bottom: 5%">

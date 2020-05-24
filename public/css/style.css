@@ -21,7 +21,7 @@ body {
   
 a, span, p, ul, ol {
     display: inline-block;
-    font-family: 'Hind', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 #hero {
