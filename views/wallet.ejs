@@ -20,7 +20,6 @@
         integrity="sha256-pPwrJF/X2v9erIHBoY3ZWb4P/cRx3j3/zyvQvycabs0="
         crossorigin="anonymous">
     </script>
-    <script src="https://verify.sendwyre.com/js/verify-module-init-beta.js"></script>
 
     <title>Medici Wallet</title>
 </head>
@@ -36,8 +35,61 @@
                 <h2 class="font-weight-lighter">The fast and simple interest-earning wallet.</h2>
                 <button class="btn btn-hover color-5 font-weight-light wallet-btn" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
                 <br>
-                <button class="btn btn-hover color-8 font-weight-light wallet-btn" id="wyreBtn" style="margin-bottom: 1em; color: white"><i class="far fa-credit-card"></i> Fund wallet with debit card </button>
 
+                <!-- WYRE -->
+                <button class="btn btn-hover color-8 font-weight-light wallet-btn" data-toggle="modal" data-target="#wyreModal" id="wyreBtn" style="margin-bottom: 1em; color: white"><i class="far fa-credit-card"></i> Fund wallet with debit card </button>
+                
+                <!-- Modal for funding wallet with fiat -->
+                <!-- Modal -->
+                <div class="modal fade" id="wyreModal" tabindex="-1" role="dialog" aria-labelledby="wyreModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="wyreModalLongTitle"><i class="far fa-credit-card"></i> Fund your wallet using a debit card</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>To start earning interest, purchase some DAI or ETH for your wallet.</p>
+                            <p>Funds will be transferred to your <span class="gold-text"> Medici Wallet</span>, and you decide how much you want to supply to earn interest.</p>
+                            <p>Withdraw anytime.</p>
+                            <br>
+                            <!-- enter amount -->
+                            <p class="gold-text"><b>Amount</b></p>
+                            <br>
+                            <input type="text" id="amountToFund">
+                            <br>
+
+                            <div style="margin-top: 3%">
+                                <p class="gold-text"><b>Token type</b></p>
+                                <select class="custom-select" id="tokenToBuy" style="margin-bottom: 5%">
+                                    <option selected>Select a token</option>
+                                    <option value="eth">ETH</option>
+                                    <option value="dai">DAI</option>
+                                </select>
+                            </div>
+                            
+                            <div id="currencyConverter" style="display: none;">
+                                <p>The DAI stablecoin is pegged to the US Dollar. Need help with conversion?</p>
+                                                
+                                <!-- Currency Converter Script - FxExchangeRate.com  -->
+                                <div style="width:248px;height:auto;border:1px solid #ADA368;text-align:center;font-size:16px;font-family:sans-serif,Arial,Helvetica;border-top-right-radius:5px; border-top-left-radius:5px;background-color:#FFFFFF;"><div style="width:100%; height:24px;padding:5px 0px 0px 0px;background-color:#CCB882;font-weight:bold;"><a rel="nofollow" style="color:#FFFFFF;text-decoration:none;" href="https://www.fxexchangerate.com/">Currency Converter</a></div><script type="text/javascript" src="https://w.fxexchangerate.com/converter.php?fm=USD&ft=EUR&lg=en&am=1&ty=1"></script></div>
+                                <!--  End of Currency Converter Script -  FxExchangeRate.com -->
+    
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark" id="open-wyre">💳 Fund with debit card</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                
                 <h4 class="font-weight-lighter">Wallet Balances</h4>
                 <div class="card supply-card shadow-sm">
                     <div class="card-block">
@@ -243,7 +295,7 @@
                 daiContract.methods.decimals().call().then((decimals) => {
                     balance = balance / (10**decimals);
                     console.log("dai balance in wallet: ", balance.toString());
-                    walletBalanceDai.innerHTML = parseFloat(balance).toFixed(4) + "DAI"
+                    walletBalanceDai.innerHTML = parseFloat(balance).toFixed(4) + " DAI"
                 })
             })
 
@@ -463,38 +515,26 @@
             portis.showPortis();
         })
 
-        // debit card popup
-        var widget = new Wyre({
-            env: 'test',
-            operation: {
-                type: 'debitcard-hosted-dialog',
-                // dest: "ethereum:" + myWalletAddress,
-                destCurrency: "ETH",
-                sourceAmount: 10.0,
-                paymentMethod: 'debit-card'
+        $('#open-wyre').click(() => {            
+            // read in the form fields
+            var amount = $('#amountToFund').val();
+            var tokenType = $('#tokenToBuy').val();
+            // console.log("open wyre button clicked! amount: " + amount + " token type: " + tokenType);
+
+            // construct the wyre url, and open in new tab
+            var wyreUrl = 'https://pay.testwyre.com/purchase?dest=ethereum%3A' + myWalletAddress + '&destCurrency=' + tokenType + '&sourceAmount=' + amount + '&paymentMethod=debit-card';
+            window.open(wyreUrl, '_blank');
+            $('#wyreModal').modal('toggle');
+        })
+
+        $('#tokenToBuy').change(() => {
+            var selectedToken = $('#tokenToBuy').val();
+            // if dai, show the currency converter
+            if (selectedToken == 'dai') {
+                $('#currencyConverter').show();
+            } else {
+                $('#currencyConverter').hide();
             }
-        });
-
-        widget.on("exit", function (e) {
-            console.log("exit", e);
-        })
-
-        widget.on("error", function (e) {
-            console.log("error", e);
-        })
-
-        widget.on("complete", function (e) {
-            console.log("complete", e );
-        });
-
-        widget.on('ready', function(e) {
-            console.log("ready", e );
-            widget.open();
-        })
-
-        $('#wyreBtn').click(function(){
-            console.log('open')
-            widget.open();
         })
         
     </script>
