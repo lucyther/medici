@@ -179,3 +179,7 @@ input[type=text] {
     border: none;
     border-bottom: 1px solid #000000;
 }
+
+input#amountToSupply, input#amountToRedeem {
+    width: 100%;
+}

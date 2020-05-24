@@ -54,7 +54,7 @@
                 <hr>
 
                 <h4 class="font-weight-lighter">Deposited Balances</h4>
-                <p class="small">cTokens represent your balance in the Compound protocol, and accrue interest over time.</p>
+                <p class="small">cTokens represent your balance in the <span class="gold-text">Compound protocol</span>, and accrue interest over time.</p>
                 <!-- DAI SUPPLY -->
                 <table class="table">
                     <thead>
@@ -116,7 +116,7 @@
             <h3 class="display-5 font-weight-lighter"><span class="underline--magical-yellow-thick">Supply or Redeem</span> </h3>
             <!-- SUPPLY OR REDEEM -->
 
-            <select class="custom-select" id="token-select">
+            <select class="custom-select" id="token-select" style="margin-bottom: 5%">
                 <option selected>Select a token</option>
                 <option value="eth">ETH</option>
                 <option value="dai">DAI</option>
@@ -124,24 +124,29 @@
 
 
             <span id="spinner" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
-            <p id="statusMessage"></p>
-
-            <p id="supplyRateInfoEth" class="small"></p>
-            <p id="supplyRateInfoDai" class="small"></p>
+            <p id="statusMessage"></p>            
 
             <section id="supplyOrRedeem">
-                <h5 class="font-weight-light"><i class="fas fa-piggy-bank"></i> Supply ETH to start earning interest</h5>
-                <p id="supplyInterestEth" class="small" style="display: none;"></p>
-                <form action="" id="supplyForm">
+                <h5 class="font-weight-light"><i class="fas fa-piggy-bank"></i> Supply tokens to start earning interest</h5>
+
+                <div id="supplyRateInfo">
+                </div>
+
+                <form action="" id="supplyForm" style="margin-top: 5%;">
                     <input type="text" id="amountToSupply">
                     <input type="submit" class="btn btn-hover color-5 font-weight-light" id="supplyBtn" style="padding-top: .7rem;" value="SUPPLY">
                 </form>
 
 
-                <h5 class="font-weight-light"><i class="fas fa-hand-holding-usd"></i> Redeem ETH from cETH</h5>
-                <p id="cEthAvailable">cETH available: </p>
-                <p id="cDaiAvailable">cDAI available: </p>
-                <form action="" id="redeemForm">
+                
+
+                <form action="" id="redeemForm" style="margin-top: 5%;">
+
+
+                    <h5 class="font-weight-light"><i class="fas fa-hand-holding-usd"></i> Redeem ETH from cETH</h5>
+
+                    <div id="cTokensAvailable"></div>
+
                     <input type="text" id="amountToRedeem">
                     <input type="submit" class="btn btn-hover color-8 font-weight-light" id="redeemBtn" style="padding-top: .7rem;" value="REDEEM">
                 </form>
@@ -174,7 +179,7 @@
 
         var myWalletAddress;
         // cTokens
-        var cTokenBalance; 
+        var cEthBalance; 
         var cDaiBalance;
         // Supplied to compound (underlying)
         var suppliedEth;
@@ -221,10 +226,9 @@
             // Get the wallet's cETH balance
             cEthContract.methods.balanceOf(myWalletAddress).call()
             .then((result) => {
-                cTokenBalance = result / 1e8
+                cEthBalance = result / 1e8
                 console.log("[wallet-ctoken-balance] obtained cToken balance");
-                cTokensEth.innerHTML = cTokenBalance;
-                cEthAvailable.innerHTML += " " + cTokenBalance;
+                cTokensEth.innerHTML = cEthBalance;
 
             }).catch((error) => {
                 console.error('[wallet-ctoken-balance] error: ', error);
@@ -259,7 +263,6 @@
                 cDaiBalance = result / 1e8;
                 console.log("[wallet-cdai-balance] obtained cDai balance: ", cDaiBalance)
                 cTokensDai.innerHTML = cDaiBalance;
-                cDaiAvailable.innerHTML += " " + cDaiBalance;
             }).catch((error) => {
                 console.error('[wallet-cdai-balance] error: ', error)
             })
@@ -281,7 +284,6 @@
             console.log("supply interest rate from API (eth): ", ethSupplyRate)
             console.log("supply interest rate from API (dai): ", daiSupplyRate)
 
-            supplyInterestEth.innerHTML = "Supply interest rate: " + parseFloat(ethSupplyRate).toFixed(5);
             exchangeRateEth.innerHTML += "1 cETH = " + parseFloat(ethExchangeRate).toFixed(6) + " ETH";
             exchangeRateDai.innerHTML += "1 cDAI = " + parseFloat(daiExchangeRate).toFixed(6) + " DAI";
         })
@@ -295,7 +297,6 @@
             // const interestPerEthThisBlock = supplyRatePerBlock / 1e18
             ethInterestPerBlock = supplyRatePerBlock / 1e18;
             console.log("each supplied ETH will increase by " + ethInterestPerBlock + " per Ethereum block (every ~15 seconds) based on the current interest rate")
-            $('#supplyRateInfoEth').append("Each supplied ETH will increase by <b>" + ethInterestPerBlock + "</b> per Ethereum block (every ~15 seconds) based on the current interest rate of " + ethSupplyRate);
 
         }).catch((error) => {
             console.error('[supply-rate] error: ', error);
@@ -304,7 +305,6 @@
         cDaiContract.methods.supplyRatePerBlock().call().then((supplyRatePerBlock) => { 
             daiInterestPerBlock = supplyRatePerBlock / 1e18
             console.log("each supplied DAI will increase by " + daiInterestPerBlock + " per Ethereum block (every ~15 seconds) based on the current interest rate")
-            $('#supplyRateInfoDai').append("Each supplied DAI will increase by <b>" + daiInterestPerBlock + "</b> per Ethereum block (every ~15 seconds) based on the current interest rate of " + daiSupplyRate);
 
         }).catch((error) => {
             console.error('[supply-rate] error: ', error);
@@ -361,6 +361,28 @@
                 })
             }
         }
+
+        // Supply/redeem dropdown
+        $('#token-select').on('change', event => {
+            console.log("selection detected");
+            var tokenType = $('#token-select').val();
+            if (tokenType == 'eth') {
+                // supply interest rate
+                $('#supplyRateInfo').empty();
+                $('#supplyRateInfo').append(`<p class="small">Each supplied ETH will increase by <b><span class="gold-text">` + ethInterestPerBlock + `</span></b> per Ethereum block (every ~15 seconds) based on the current interest rate of <span class="gold-text">` + parseFloat(ethSupplyRate).toFixed(12) + `</span></p>`);
+                // available to redeem
+                $('#cTokensAvailable').empty();
+                $('#cTokensAvailable').append(`<p>cETH available: ` + cEthBalance + `</p>`)
+                
+            } else if (tokenType == 'dai') {
+                // supply interest rate
+                $('#supplyRateInfo').empty();
+                $('#supplyRateInfo').append(`<p class="small">Each supplied DAI will increase by <b><span class="gold-text">` + daiInterestPerBlock + `</span></b> per Ethereum block (every ~15 seconds) based on the current interest rate of <span class="gold-text">` + parseFloat(daiSupplyRate).toFixed(12) + `</span></p>`);
+                // available to redeem
+                $('#cTokensAvailable').empty();
+                $('#cTokensAvailable').append(`<p>cDAI available: ` + cDaiBalance + `</p>`)
+            }
+        });
 
         // Redeem cTokens
         $('#amountToRedeem').on('input', (event) => {
