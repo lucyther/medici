@@ -39,7 +39,7 @@
             <section id="info">
 
                 <h1 class="display-4 font-weight-lighter"><span class="underline--magical-yellow-thick">MEDICI</span> </h1>
-                <p class="small">NOTE: This is a demo wallet running on the <b>Rinkeby</b> test network.</p>
+                <!-- <p class="small">NOTE: This is a demo wallet running on the <b>Rinkeby</b> test network.</p> -->
                 <h2 class="font-weight-lighter">The interest-earning wallet for stable digital currencies.</h2>
                 <!-- <h3 class="font-weight-lighter">Deposit with a debit card.</h3> -->
                 <button class="btn btn-hover color-5 font-weight-light wallet-btn" id="walletButton" style="margin-bottom: 1em"><i class="fas fa-wallet"></i> </button>
@@ -512,8 +512,11 @@
             console.log("updating...")
             suppliedEth *= (1 + ethInterestPerBlock / 5);
             suppliedDai *= (1 + daiInterestPerBlock / 5);
-            underlyingEth.innerHTML = suppliedEth.toFixed(9);
-            underlyingDai.innerHTML = suppliedDai.toFixed(9);
+            if (suppliedEth && suppliedDai) {
+                underlyingEth.innerHTML = suppliedEth.toFixed(9);
+                underlyingDai.innerHTML = suppliedDai.toFixed(9);
+            }
+            
         }
 
         // Open portis wallet
