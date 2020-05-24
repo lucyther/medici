@@ -14,7 +14,14 @@
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400&display=swap" rel="stylesheet">
 
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- WEB3 -->
     <script src="https://cdn.jsdelivr.net/npm/web3@1.2.6/dist/web3.min.js"></script>
+
+    <!-- PORTIS -->
     <script
         src="https://cdn.jsdelivr.net/npm/@portis/web3@2.0.0-beta.54/umd/index.js"
         integrity="sha256-pPwrJF/X2v9erIHBoY3ZWb4P/cRx3j3/zyvQvycabs0="
@@ -28,7 +35,7 @@
     <div class="container">
 
         <div class="card body-card shadow1">
-            <section id="info">
+            <section id="info" data-aos="fade-down" data-aos-delay="300">
 
                 <h1 class="display-4 font-weight-light"><span class="underline--magical-yellow-thick">Medici</span> </h1>
                 <p class="small">NOTE: This is a demo wallet running on the <b>Rinkeby</b> test network.</p>
@@ -164,7 +171,7 @@
             </section>
         </div>
 
-        <div class="card body-card shadow1">
+        <div class="card body-card shadow1" data-aos="fade-up" data-aos-delay="300">
             <h3 class="display-5 font-weight-lighter"><span class="underline--magical-yellow-thick">Supply or Redeem</span> </h3>
             <!-- SUPPLY OR REDEEM -->
 
@@ -189,12 +196,7 @@
                     <input type="submit" class="btn btn-hover color-5 font-weight-light" id="supplyBtn" style="padding-top: .7rem;" value="SUPPLY">
                 </form>
 
-
-                
-
                 <form action="" id="redeemForm" style="margin-top: 5%;">
-
-
                     <h5 class="font-weight-light"><i class="fas fa-hand-holding-usd"></i> Redeem ETH or DAI from cTokens</h5>
 
                     <div id="cTokensAvailable"></div>
@@ -213,6 +215,7 @@
     <script>
         const portis = new Portis('755ede7a-9432-44b1-bf4d-01af428d7542', 'rinkeby');
         const web3 = new Web3(portis.provider);
+        AOS.init();
 
         // Compound's Rinkeby contract for cETH
         const cEthContractAddress = '0xd6801a1dffcd0a410336ef88def4320d6df1883e';
