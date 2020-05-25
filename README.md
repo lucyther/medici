@@ -1,5 +1,7 @@
 # MEDICI
 https://www.medici.finance
+[Demo](https://youtu.be/TsaYFR7vudI)
+
 ![Medici banner](public/assets/banner.png)
 
 ## About
