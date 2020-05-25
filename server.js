@@ -39,6 +39,14 @@ app.route('/wallet').get(function(req, res){
     res.render('wallet');
 });
 
+app.route('/wallet-pt').get(function(req, res){
+  res.render('wallet-pt');
+});
+
+app.route('/wallet-cn').get(function(req, res){
+  res.render('wallet-cn');
+});
+
 // Get the wallet address;
 app.route('/wallet-address').get((req, res) => {
   const address = web3.eth.accounts.wallet[0].address;
