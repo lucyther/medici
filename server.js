@@ -114,6 +114,28 @@ app.route('/redeem/eth/:cTokenAmount').get((req, res) => {
   });
 });
 
+app.get('/', (req, res) => {
+  let animals = [
+    { name: 'Alligator' },
+    { name: 'Crocodile' }
+  ];
+  res.render('home', { animals: animals });
+});
+
+app.get('/blog', (req, res) => {
+  res.render('blog');
+});
+
+// Test code
+app.get('/newAnimals', function (req, res) {
+  console.log('replying with new animals!');
+  let animals = [
+      { name: 'Llama' },
+      { name: 'Tiger' }
+    ];
+  return res.status(200).json(animals);
+});
+
 // Bind the application to the port on our machine
 app.listen(process.env.PORT || 8080, () => {
   console.log(`API server started`)
