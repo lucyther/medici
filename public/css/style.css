@@ -17,7 +17,9 @@ body {
     background-color: #f5f5f5;
 }
   
-
+div.home-banner {
+    text-align: center;
+}
   
 a, span, p, ul, ol {
     display: inline-block;
@@ -40,7 +42,7 @@ a, span, p, ul, ol {
 .gold-text {
     color: rgba(136, 121, 82, 0.747);
     font-weight: lighter;
-    font-size: 1.1em;
+    /* font-size: 1.1em; */
 }
 
 .card.body-card {
@@ -86,6 +88,14 @@ a, span, p, ul, ol {
     background-position: 0 88%;
     transition: background-size 0.25s ease-in;
   }
+
+  .underline--magical-yellow-thin {
+    background-image: linear-gradient(120deg, rgba(201, 173, 122, 0.568) 0%, #f4ea8f 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 0.2em;
+    background-position: 0 88%;
+    transition: background-size 0.25s ease-in;
+}
   
 .buttons {
     margin: 10%;

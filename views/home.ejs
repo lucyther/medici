@@ -24,18 +24,17 @@
     <body>
         <%- include('partials/nav') %>
 
-        <section id="hero">
-        <div class="container home-banner">
+        <div class="container home-banner " data-aos="fade-up" data-aos-duration="500">
+            <img src="/assets/medici-black.png" class="rounded mx-auto d-block" width="80%" style="margin-top: 5em; margin-bottom: 2em;" alt="" >
             
-            <h1 class="display-1 font-weight-lighter"><span class="underline--magical-yellow-thick">Medici</span> </h1>
-            <h2 class="display-4 font-weight-lighter">The interest-earning wallet powered by decentralized finance.</h2>
-            <img src="/assets/globe.png" alt="" width="20%">
-            <span class="gold-text"><strong>Coming soon.</strong></span>
-            <a href="/blog#about" class="gold-text">Learn more</a>
-            
+            <h2 class="font-weight-lighter">The interest-earning wallet for stable <span class="underline--magical-yellow-thin">digital currencies</span>.</h2>
+            <span class="gold-text font-weight-lighter">Coming soon. See <a href="/demo" class="gold-text"><strong>demo</strong></a></span>
         </div>
-        </section>
 
         <%- include('partials/footer') %>
     </body>
 </html>
+
+<script>
+    AOS.init();
+</script>
