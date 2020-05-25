@@ -35,8 +35,8 @@ a, span, p, ul, ol {
 }
 
 .blog-post {
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin-top: 3em;
+    margin-bottom: 5em;
 }
 
 .gold-text {
