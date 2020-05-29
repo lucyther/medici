@@ -271,11 +271,12 @@ section {
     transition: 0.5s;
     margin-top: 30px;
     color: #fff;
-    background: #2487ce;
+    background: #b1982a;
   }
   
   #hero .btn-get-started:hover {
-    background: #3194db;
+    background: #cfae52;
+    text-decoration: none;
   }
   
   #hero .icon-boxes {
@@ -300,7 +301,7 @@ section {
   }
   
   #hero .icon-box .title a {
-    color: #124265;
+    color: rgba(136, 121, 82, 0.747);
     transition: 0.3s;
   }
   
@@ -317,7 +318,7 @@ section {
     transition: all 0.3s ease-in-out;
     font-size: 36px;
     line-height: 1;
-    color: #2487ce;
+    color: #272727;
   }
   
   #hero .icon-box:hover {
@@ -325,7 +326,8 @@ section {
   }
   
   #hero .icon-box:hover .title a {
-    color: #2487ce;
+    /* color: #2487ce; */
+    text-decoration: none;
   }
   
   @media (min-width: 1024px) {
