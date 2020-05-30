@@ -279,6 +279,25 @@ section {
     background: #e7d191f7;
     text-decoration: none;
   }
+
+  #hero .btn-subscribe {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    padding: 14px 50px;
+    border-radius: 5px;
+    transition: 0.5s;
+    margin-top: 30px;
+    color: #fff;
+    background: #9f9d97cf;
+  }
+  
+  #hero .btn-subscribe:hover {
+    background: #cac2a8cf;
+    text-decoration: none;
+  }
   
   #hero .icon-boxes {
     margin-top: 100px;
