@@ -31,13 +31,14 @@ a, span, p, ul, ol {
 }
 
 .blog-post {
-    margin-top: 3em;
-    margin-bottom: 5em;
+    font-weight: lighter;
+    margin-top: 0.5em;
+    /* margin-bottom: 5em; */
 }
 
 .gold-text {
     color: rgba(136, 121, 82, 0.747);
-    font-weight: lighter;
+    /* font-weight: lighter; */
     /* font-size: 1.1em; */
 }
 
@@ -194,7 +195,7 @@ input#amountToSupply, input#amountToRedeem {
 # Sections General
 --------------------------------------------------------------*/
 section {
-    padding: 80px 0;
+    padding: 50px 0;
   }
   
   .section-bg {

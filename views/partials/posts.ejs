@@ -17,129 +17,170 @@
   <!-- /.blog-post -->
 
 
-  <div class="blog-post">                  
-      <h2 class="blog-post-title">Weekly Progress: May 24, 2020</h2>
-      <!-- <hr> -->
-      <p>This is the final week of <a href="https://hackathon.money/">HackMoney</a>, and tonight's the submission deadline! I learned a lot over the last 4 weeks, only to walk away with an idea of how much I have yet to learn about DeFi.</p>
+  <section id="stablecoins" style="padding: 1em;">
+    <div class="blog-post">                  
+        <h3 class="font-weight-light">Earning Interest from USD-based Stablecoins</h3>
+          <br>
+          <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F998e2c9b-ed1e-4822-af0c-0136b393913e%2FUntitled.png?table=block&id=628a1f71-6424-4b8e-9c91-0bbd04e5af4f&width=3730&cache=v2" class="rounded mx-auto d-block" width="80%" alt="" style="margin: 2em">
+          <p>Medici is focused on helping its users store and earn interest in stable cryptocurrencies. This means we specialize in tokens pegged to fiat currencies, and select those with a proven track record of a 1:1 token-to-fiat ratio.</p>
+          <p>We started with supporting DAI, and are in the process of adding <strong>USD Coin</strong> and <strong>Tether</strong>.</p>
   
-      <p>This was the most productive week since the inception of the project, probably due to the looming deadline. 😅</p>
-      
-      <p>Here's my final submission video:</p>
-      <div class="container">
-          <iframe  src="https://www.youtube.com/embed/TsaYFR7vudI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-  
-      <p>Updates for the week:</p>
-  
-      <ul>
-          <li>Completed the implementation for supplying and redeeming DAI, the most reknowned stablecoin pegged to the US Dollar.</li>
-          <li>Added modal for purchasing tokens with debit card + FX conversion widget</li>
-          <li>Major UI upgrades: Redesigned the wallet for mobile-friendliness, added dynamically-updating balances based on interest rates, new logo, new look!</li>
-          <li>Homepage redesign, fixed navbar bug</li>
-          <li>Got in touch with MoonPay for better fiat-to-crypto payments</li>
-          <li>Prototyped Chinese and Portuguese translations</li>
-          <li>Produced 4-minute presentation and demo for <a href="https://youtu.be/TsaYFR7vudI">HackMoney submission video</a></li>
-      </ul>
-  
-      <img src="assets/demo0524.gif" class="rounded mx-auto d-block" width="80%" alt="">
-  </div>
-  <!-- /.blog-post -->
+          <h4>USD Coin</h4>
+            <p>Managed by Circle and Coinbase, two of the most reputable organizations in the cryptocurrency space, the USDC Coin (USDC) is a stablecoin pegged to the US Dollar. It has a 1:1 representation against the US Dollar on the Ethereum blockchain. USDC tokens can be converted to USD at any time. The issuing and redeeming of USDC tokens is tracked by an ERC-20 contract. </p>
+            <p>The stability mechanism of the USD Coin is that every USDC token is backed with a US dollar.</p>
+            <p>USDC can be acquired using a debit card via Wyre or Moonpay, and sent to the user's Medici wallet. From there, the user decides how much USDC they want to supply for earning interest.</p>
+        
+            <h4>Tether</h4>
+            <p>Tether also aims to have a 1:1 peg against the US Dollar. It is relatively more controversial than its competitors such as DAI and USDC.</p>
+            <p>Tethers exist on the Bitcoin blockchain, and utilizes "proof of reserves" to ascertain its stability against traditional currency. Tether is currently publishing the value of their reserves daily, and claims that the value of their reserves match or exceed the value of all Tethers in circulation.</p>
 
+            <h4>Earning APY</h4>
+            <p>The current Compound APY earned by supplying the above tokens:</p>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Token</th>
+                    <th scope="col">APY</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>DAI</td>
+                    <td>0.73%</td>
+                  </tr>
+                  <tr>
+                    <td>USDC</td>
+                    <td>2.08%</td>
+                  </tr>
+                  <tr>
+                    <td>USDT</td>
+                    <td>1.74%</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+    </div>
+      <!-- /.blog-post -->
+</section>
+
+  <section id="update-05-24" style="padding: 1em;">
+    <div class="blog-post">                  
+        <h3 class="font-weight-light">Weekly Progress: May 24, 2020</h3>
+          <!-- <hr> -->
+          <p class="font-weight-lighter">This is the final week of <a href="https://hackathon.money/">HackMoney</a>, and tonight's the submission deadline! I learned a lot over the last 4 weeks, only to walk away with an idea of how much I have yet to learn about DeFi.</p>
+      
+          <p class="font-weight-lighter">This was the most productive week since the inception of the project, probably due to the looming deadline. 😅</p>
+          
+          <p>The final submission video:</p>
+          <div class="container" style="text-align: center;">
+              <iframe  src="https://www.youtube.com/embed/TsaYFR7vudI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <br>
+          <p><strong>Updates for the week:</strong> </p>
+          <p>Completed the implementation for supplying and redeeming DAI, the most reknowned stablecoin pegged to the US Dollar.</p>
+          <p>Added modal for purchasing tokens with debit card + FX conversion widget</p>
+          <p>Major UI upgrades: Redesigned the wallet for mobile-friendliness, added dynamically-updating balances based on interest rates, new logo, new look!</li>
+          <p>Homepage redesign, fixed navbar bug</p>
+          <p>Got in touch with MoonPay for better fiat-to-crypto payments</p>
+          <p>Prototyped Chinese and Portuguese translations</p>
+          <p>Produced 4-minute presentation and demo for <a href="https://youtu.be/TsaYFR7vudI">HackMoney submission</a></li>
+
+            <br>
+          <img src="assets/demo0524.gif" class="rounded mx-auto d-block" width="80%" alt="" style="margin: 2em">
+      </div>
+      <!-- /.blog-post -->
+</section>
+
+<section id="update-05-17">
 
 <div class="blog-post">
-    <h2>Weekly Progress: May 17, 2020</h2>
+    <h3 class="font-weight-light">Weekly Progress: May 17, 2020</h3>
     
-    <ul style="margin-top: 1em">
-        <li>Deployed <a href="/wallet">demo app</a> to Rinkeby testnet! In-app wallet (Portis integration) working smoothly for account creation and confirming transactions. Interacting with the Compound contract on Rinkeby.</li>
-        <li>Customer research: conversations with 8 individuals from emerging economies, about spending and saving habits</li>
-        <li>Feedback from <a href="https://pioneer.app/">Pioneer tournament</a>: participants in Russia and New Zealand mentioned concern about domestic currencies, which means there are opportunities for DeFi to help these individuals diversify their assets.</li>
-        <li>Using the Compound API to fetch interest and exchange rates</li>
-        <li>Added Wyre widget for wallet funding with fiat (debit card)</li>
-        <li>Wallet UI re-design: Better organization and clarity, new font, assets</li>
-        <li>Landing page improvements, enabled SSL</li>
-    </ul>
-    <div class="container">
-        <iframe  src="https://www.youtube.com/embed/6yQgx2P50ig" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
+    <p>Deployed <a href="/wallet">demo app</a> to Rinkeby testnet! In-app wallet (Portis integration) working smoothly for account creation and confirming transactions. Interacting with the Compound contract on Rinkeby.</p>
+    <p>Customer research: conversations with 8 individuals from emerging economies, about spending and saving habits</p>
+    <p>Feedback from <a href="https://pioneer.app/">Pioneer tournament</a>: participants in Russia and New Zealand mentioned concern about domestic currencies, which means there are opportunities for DeFi to help these individuals diversify their assets.</p>
+    <p>Using the Compound API to fetch interest and exchange rates</p>
+    <p>Added Wyre widget for wallet funding with fiat (debit card)</p>
+    <p>Wallet UI re-design: Better organization and clarity, new font, assets</p>
+    <p>Landing page improvements, enabled SSL</p>
+
 
 </div>
+</section>
+
+<section id="update-05-10">
 
 <div class="blog-post">
-    <h2>Weekly Progress: May 10, 2020</h2>
+    <h3 class="font-weight-light">Weekly Progress: May 10, 2020</h3>
     <p>Quite a few highlights this week! </p>
     
-    <ul style="margin-top: 0.5em;">
-        <li>Presented at the <a href="https://hackathon.money/">HackMoney</a> halfpoint demo session, with 50+ attendees and YouTube/Twitter livestream. Got some valuable feedback.</li>
-        <li>Put together this simple landing page to communicate Medici's motivations and progress.</li>
-        <li>Integrated our Web3 dApp with <a href="https://www.portis.io/">Portis</a>, an in-browser, mobile-friendly wallet that allows users to interact with the Ethereum blockchain using a username and password. No additional installation required!</li>
-        <li>Implementation of the logic to supply Ethereum assets to the Compound protocol and earn interest</li>
-        <li>User research: Speaking to 10+ individuals to analyze the implications of fiat currency fluctuations on emerging/developing economies</li>
-        <li>Continuing through week 2 of HackMoney, a virtual DeFi hackathon. Grateful for the support from its amazing team, mentors and sponsors!</li>
-    </ul>
+    <p>Presented at the <a href="https://hackathon.money/">HackMoney</a> halfpoint demo session, with 50+ attendees and YouTube/Twitter livestream. Got some valuable feedback.</p>
+    <p>Put together this simple landing page to communicate Medici's motivations and progress.</p>
+    <p>Integrated our Web3 dApp with <a href="https://www.portis.io/">Portis</a>, an in-browser, mobile-friendly wallet that allows users to interact with the Ethereum blockchain using a username and password. No additional installation required!</p>
+    <p>Implementation of the logic to supply Ethereum assets to the Compound protocol and earn interest</p>
+    <p>User research: Speaking to 10+ individuals to analyze the implications of fiat currency fluctuations on emerging/developing economies</p>
+    <p>Continuing through week 2 of HackMoney, a virtual DeFi hackathon. Grateful for the support from its amazing team, mentors and sponsors!</p>
+
     
     <img src="/assets/portis.gif" class="img-fluid" alt="Responsive image" style="padding: 0.5em; margin: 3%;">
 </div>
+</section>
 
 
+<section id="update-05-03">
 <div class="blog-post">
-    <h2>Weekly Progress: May 3, 2020</h2>
-    <ul style="margin-top: 0.5em;">
-        <li>Finished week 1 of <a href="https://hackathon.money/">HackMoney</a>, a virtual hackathon for hackers around the world to build DeFi applications.</li>
-        <li>In less than 24 hours, built proof of concept for the wallet using web3.js, interfacing with Compound protocol on Ethereum. Engaged with the core devs!</li>
-        <li>Published 650-word post to share the initial concepts behind Medici</li>
-        <li>Got extensive feedback from 3 of my smartest founder friends</li>
-    </ul>
-</div>
+    <h3 class="font-weight-light">Weekly Progress: May 3, 2020</h3>
+    <p>Finished week 1 of <a href="https://hackathon.money/">HackMoney</a>, a virtual hackathon for hackers around the world to build DeFi applications.</p>
+    <p>In less than 24 hours, built proof of concept for the wallet using web3.js, interfacing with Compound protocol on Ethereum. Engaged with the core devs!</p>
+    <p>Published 650-word post to share the initial concepts behind Medici</p>
+    <p>Got extensive feedback from 3 of my smartest founder friends</p>
 
+</div>
+</section>
 
 <section id="about">
     <h2 class="font-weight-lighter"><span class="underline--magical-yellow-thin">About Medici</span></h2>
 
-    <div class="container">
-        <h3 class="font-weight-light">Earn interest on savings converted to crypto assets.</h3>
-        <h4 class="font-weight-lighter">Open to anyone in the world. Get started in minutes.</h4>
-    </div>
+    <h3 class="font-weight-light">Earn interest on savings converted to crypto assets.</h3>
+    <h4 class="font-weight-lighter">Open to anyone in the world. Get started in minutes.</h4>
+
     <br>
-    <div class="container details">
-        <h3 class="font-weight-light">What is Medici?</h3>
-        <p class="font-weight-lighter">
-            We are building Medici to address a few issues in today's turbulent economy and the blockchain space:
-        </p>
-        <ol>
-            <li class="py-2 font-weight-lighter"><b>Hedge currency depreciation risk:</b> Make it easy for anyone in the world to hold "stable" assets (digital gold, digital dollar)</li>
-            <br>
-            <li class="py-2 font-weight-lighter"><b>Lower barriers to entry for investing:</b> Allow anyone to invest in a range of interest-earning assets, without the need of setting up a bank or ETRADE account</li>
-            <br>
-            <li class="py-2 font-weight-lighter"><b>Poor UX in blockchain apps:</b> Easy onboarding without needing an existing crypto wallet, browser extensions, etc.</li>
-        </ol>
-        
+    <h3 class="font-weight-light">What is Medici?</h3>
+    <p class="font-weight-lighter">
+        We are building Medici to address a few issues in today's turbulent economy and the blockchain space:
+    </p>
+    <ol>
+        <li class="py-2 font-weight-lighter"><b>Hedge currency depreciation risk:</b> Make it easy for anyone in the world to hold "stable" assets (digital gold, digital dollar)</li>
         <br>
-        
-        <h3 class="font-weight-light">How does it work?</h3>
-        <p class="font-weight-lighter">Medici values accessibility for international users—often, those who are the most in need for decentralized finance.</p>
-
-        <p class="font-weight-lighter">To get started, Medici allows anyone to fund a crypto wallet with their debit card. The funds are then converted into a digital asset such as a stablecoin (DAI, USDC) and deposited into Compound.</p>
-
-        <p class="font-weight-lighter">Compound is an algorithmic, autonomous interest rate protocol built on Ethereum, that allows users to supply and borrow crypto assets. When you supply an asset to Compound, that asset can start earning interest right away.</p>
-
-        <p class="font-weight-lighter">In V1, users will be able to monitor their earnings on the Medici UI and instantly deposit or redeem their assets (as Ethereum or DAI).</p>
-
-        <img src="/assets/wallet-ui.png" class="img-fluid" alt="Responsive image" width="40%" style="padding: 0.5em">
-
+        <li class="py-2 font-weight-lighter"><b>Lower barriers to entry for investing:</b> Allow anyone to invest in a range of interest-earning assets, without the need of setting up a bank or ETRADE account</li>
         <br>
-        <h3 class="font-weight-light">Why blockchain?</h3>
-        <ol>
-            <li class="py-2 font-weight-lighter">You only need an internet connection to start investing. This drastically lowers the barriers to entry. Those of us who live in the United States take this for granted—we have our Robinhood and Wealthfront accounts, 401k, and we earn a salary in the world's favorite currency. We laugh at how cheap everything is when we take our USD and go to Thailand, Greece, Japan. But most people outside the US (especially in the developing world) have much fewer options.</li>
-            <li class="py-2 font-weight-lighter">It is an ingenious method to hedge currency depreciation: Usually, you can't hold USD if you live and have an account in Brazil or Vietnam. But if your domestic currency is one of those being hammered by COVID-19, you might be going through the anxiety of watching the value of your earnings plummet. Today's economy is a global one, so you're impacted even if you don't leave your home country (for example, coffee might become more expensive if your country relies on importing this commodity).</li>
-            <li class="py-2 font-weight-lighter">Generate earnings, but not just in a specific currency: Even if you use a Mexican version of Robinhood, odds are your investments are still in Peso. So if you've lost trust in your local currency, you have very few options. The blockchain allows you to hold a variety of assets: USD stablecoins, Ethereum, Bitcoin, and more.</li>
-        </ol>
-        <br>
-        <h3 class="font-weight-light">Why now?</h3>
-        <ol>
-            <li class="py-2 font-weight-lighter">In 2020, DeFi is taking the blockchain space by storm. One of its most promising protocols, Compound (funded by Bain, a16z, Coinbase) is now allowing people to earn interest on Tether—which offers digital versions of national currencies like the US dollar, the Euro, and offshore Chinese yuan. Many of Compound's developer docs were written in the past month!</li>
-            <li class="py-2 font-weight-lighter">We are seeing a wave of new tools and libraries for developers to build on top of, which can facilitate onboarding the "mainstream" user.</li>
-            <li class="py-2 font-weight-lighter">a16z announced crypto fund II this past week (May 2020), a $500M fund to accelerate next-generation payments, decentralized finance, web3, and more.</li>
-            <li class="py-2 font-weight-lighter">COVID-19 has caused fear in the markets, hence the spike in gold and anxiety around currency depreciation.</li>
-        </ol>
-    </div>
+        <li class="py-2 font-weight-lighter"><b>Poor UX in blockchain apps:</b> Easy onboarding without needing an existing crypto wallet, browser extensions, etc.</li>
+    </ol>
+    
+    <h3 class="font-weight-light">How does it work?</h3>
+    <p class="font-weight-lighter">Medici values accessibility for international users—often, those who are the most in need for decentralized finance.</p>
+
+    <p class="font-weight-lighter">To get started, Medici allows anyone to fund a crypto wallet with their debit card. The funds are then converted into a digital asset such as a stablecoin (DAI, USDC) and deposited into Compound.</p>
+
+    <p class="font-weight-lighter">Compound is an algorithmic, autonomous interest rate protocol built on Ethereum, that allows users to supply and borrow crypto assets. When you supply an asset to Compound, that asset can start earning interest right away.</p>
+
+    <p class="font-weight-lighter">In V1, users will be able to monitor their earnings on the Medici UI and instantly deposit or redeem their assets (as Ethereum or DAI).</p>
+
+    <img src="/assets/wallet-ui.png" class="img-fluid" alt="Responsive image" width="40%" style="padding: 1em">
+
+    <br>
+    <h3 class="font-weight-light">Why blockchain?</h3>
+    <ol>
+        <li class="py-2 font-weight-lighter">You only need an internet connection to start investing. This drastically lowers the barriers to entry. Those of us who live in the United States take this for granted—we have our Robinhood and Wealthfront accounts, 401k, and we earn a salary in the world's favorite currency. We laugh at how cheap everything is when we take our USD and go to Thailand, Greece, Japan. But most people outside the US (especially in the developing world) have much fewer options.</li>
+        <li class="py-2 font-weight-lighter">It is an ingenious method to hedge currency depreciation: Usually, you can't hold USD if you live and have an account in Brazil or Vietnam. But if your domestic currency is one of those being hammered by COVID-19, you might be going through the anxiety of watching the value of your earnings plummet. Today's economy is a global one, so you're impacted even if you don't leave your home country (for example, coffee might become more expensive if your country relies on importing this commodity).</li>
+        <li class="py-2 font-weight-lighter">Generate earnings, but not just in a specific currency: Even if you use a Mexican version of Robinhood, odds are your investments are still in Peso. So if you've lost trust in your local currency, you have very few options. The blockchain allows you to hold a variety of assets: USD stablecoins, Ethereum, Bitcoin, and more.</li>
+    </ol>
+    <br>
+    <h3 class="font-weight-light">Why now?</h3>
+    <ol>
+        <li class="py-2 font-weight-lighter">In 2020, DeFi is taking the blockchain space by storm. One of its most promising protocols, Compound (funded by Bain, a16z, Coinbase) is now allowing people to earn interest on Tether—which offers digital versions of national currencies like the US dollar, the Euro, and offshore Chinese yuan. Many of Compound's developer docs were written in the past month!</li>
+        <li class="py-2 font-weight-lighter">We are seeing a wave of new tools and libraries for developers to build on top of, which can facilitate onboarding the "mainstream" user.</li>
+        <li class="py-2 font-weight-lighter">a16z announced crypto fund II this past week (May 2020), a $500M fund to accelerate next-generation payments, decentralized finance, web3, and more.</li>
+        <li class="py-2 font-weight-lighter">COVID-19 has caused fear in the markets, hence the spike in gold and anxiety around currency depreciation.</li>
+    </ol>
 </section>
