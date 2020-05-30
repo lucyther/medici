@@ -87,7 +87,7 @@ a, span, p, ul, ol {
   }
 
   .underline--magical-yellow-thin {
-    background-image: linear-gradient(120deg, rgba(201, 173, 122, 0.568) 0%, #f4ea8f 100%);
+    background-image: linear-gradient(120deg, rgba(201, 173, 122, 0.568) 0%, #f5eca1 100%);
     background-repeat: no-repeat;
     background-size: 100% 0.2em;
     background-position: 0 88%;
@@ -230,7 +230,7 @@ section {
     width: 100%;
     height: 100vh;
     position: relative;
-    background: url("../img/hero-bg.jpg") top center;
+    background: url("/assets/hero-bg.jpg") top center;
     background-size: cover;
     position: relative;
   }
@@ -272,11 +272,11 @@ section {
     transition: 0.5s;
     margin-top: 30px;
     color: #fff;
-    background: #b1982a;
+    background: #d0b871cf;
   }
   
   #hero .btn-get-started:hover {
-    background: #cfae52;
+    background: #e7d191f7;
     text-decoration: none;
   }
   
