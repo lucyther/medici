@@ -12,9 +12,11 @@ body {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px; /* Set the fixed height of the footer here */
-    line-height: 60px; /* Vertically center the text there */
+    height: 80px; /* Set the fixed height of the footer here */
+    line-height: 80px; /* Vertically center the text there */
     background-color: #f5f5f5;
+    font-weight: lighter;
+    font-size: 16px;
 }
   
 div.home-banner {
@@ -209,11 +211,11 @@ section {
   
   .section-title h2 {
     font-size: 32px;
-    font-weight: bold;
+    font-weight: lighter;
     text-transform: uppercase;
     margin-bottom: 20px;
     padding-bottom: 0;
-    color: #124265;
+    color: #9d8b58eb;
   }
   
   .section-title p {
@@ -258,7 +260,7 @@ section {
   #hero h2 {
     color: #5e5e5e;
     margin: 10px 0 0 0;
-    font-size: 22px;
+    /* font-size: 22px; */
   }
   
   #hero .btn-get-started {
@@ -315,9 +317,11 @@ section {
   }
   
   #hero .icon-box .title {
-    font-weight: 700;
+    font-weight: lighter;
     margin-bottom: 15px;
-    font-size: 18px;
+    font-size: 20px;
+    color: #837958;
+    
   }
   
   #hero .icon-box .title a {
@@ -326,9 +330,10 @@ section {
   }
   
   #hero .icon-box .description {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 28px;
     margin-bottom: 0;
+    font-weight: lighter;
   }
   
   #hero .icon-box .icon {
@@ -370,4 +375,45 @@ section {
     }
   }
 
+
+
+/*--------------------------------------------------------------
+# About Section
+--------------------------------------------------------------*/
+
+#about {
+    margin-top: 5%;
+}
+  .iframe-container{
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; 
+    height: 0;
+    text-align: center;
+  }
+  .iframe-container iframe{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #about .btn-get-started {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    padding: 14px 50px;
+    border-radius: 5px;
+    transition: 0.5s;
+    margin-top: 50px;
+    color: #fff;
+    background: #cdc29f;
+  }
   
+  #about .btn-get-started:hover {
+    background: #e7d191f7;
+    text-decoration: none;
+  }
