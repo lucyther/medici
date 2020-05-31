@@ -25,7 +25,7 @@ div.home-banner {
   
 a, span, p, ul, ol {
     display: inline-block;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 #blog-content a {
@@ -35,7 +35,11 @@ a, span, p, ul, ol {
 .blog-post {
     font-weight: lighter;
     margin-top: 0.5em;
-    /* margin-bottom: 5em; */
+    margin-bottom: 5em;
+}
+
+.blog-post-title {
+    text-align: center;
 }
 
 .gold-text {
