@@ -1,8 +1,12 @@
 const express = require('express');
+var favicon = require('serve-favicon');
 
 // Creating an express app
 var app = express();
 app.use(express.static('public'));
+
+// favicon
+app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
 // Set ejs as templating engine
 // ejs looks into the 'views' folder for templates to render
