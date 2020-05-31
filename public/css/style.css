@@ -28,8 +28,13 @@ a, span, p, ul, ol {
     font-family: 'Poppins', sans-serif;
 }
 
-#blog-content a {
+a {
     color: rgba(136, 121, 82, 0.747);
+}
+
+a:hover {
+  color: rgb(94, 57, 57);
+  text-decoration: none;
 }
 
 .blog-post {

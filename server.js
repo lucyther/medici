@@ -126,6 +126,10 @@ app.get('/', (req, res) => {
   res.render('home', { animals: animals });
 });
 
+app.get('/home-pt', (req, res) => {
+  res.render('home-pt');
+});
+
 app.get('/blog', (req, res) => {
   res.render('blog');
 });
